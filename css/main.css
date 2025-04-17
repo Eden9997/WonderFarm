@@ -1,34 +1,377 @@
-/* Main CSS file that imports all modules */
+/* Imports của các modules CSS */
+@import './modules/base.css';
+@import './modules/grid.css';
+@import './modules/plants.css';
+@import './modules/shop.css';
+@import './modules/character.css';
+@import './modules/quests.css';
+@import './modules/achievements.css';
+@import './modules/leaderboard.css';
+@import './modules/effects.css';
+@import './modules/responsive.css';
+@import './modules/ios-font-fix.css';
+@import './modules/font-vietnamese.css'; /* Thêm module font mới hỗ trợ tiếng Việt */
 
-/* Base styles and resets */
-@import url('modules/base.css');
+/* Import fonts hỗ trợ tiếng Việt */
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&display=swap');
 
-/* Grid layout */
-@import url('modules/grid.css');
+:root {
+    /* Font variables - sử dụng các biến từ font-vietnamese.css */
+    --main-font: var(--vietnamese-text-font);
+    --display-font: var(--display-font);
+    --heading-font: var(--title-font);
+    --pixel-smooth: pixelated;
+    
+    /* Color palette */
+    --primary-color: #4CAF50;
+    --secondary-color: #2196F3;
+    --accent-color: #FFC107;
+    --warning-color: #FF5722;
+    --success-color: #8BC34A;
+    --error-color: #F44336;
+    --info-color: #00BCD4;
+    --light-color: #f0f0f0;
+    --dark-color: #222222;
+    --gray-color: #9E9E9E;
+    
+    /* Transparency colors */
+    --primary-transparent: rgba(76, 175, 80, 0.85);
+    --dark-transparent: rgba(0, 0, 0, 0.75);
+    --light-transparent: rgba(255, 255, 255, 0.85);
+    
+    /* Sizes */
+    --header-height: 60px;
+    --footer-height: 80px;
+    --border-radius: 8px;
+    --button-radius: 5px;
+    
+    /* Spacing */
+    --spacing-xs: 5px;
+    --spacing-sm: 10px;
+    --spacing-md: 15px;
+    --spacing-lg: 20px;
+    --spacing-xl: 30px;
+    
+    /* Shadows */
+    --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    --text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    
+    /* Transitions */
+    --transition-speed: 0.3s;
+    --transition-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
 
-/* Plants and planting menu */
-@import url('modules/plants.css');
+/* General reset and base styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
 
-/* Visual effects and animations */
-@import url('modules/effects.css');
+html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: fixed;
+    font-family: var(--main-font);
+    font-size: 16px;
+    background-color: #000;
+    color: var(--light-color);
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    image-rendering: var(--pixel-smooth);
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+}
 
-/* Character system */
-@import url('modules/character.css');
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--heading-font);
+    font-weight: bold;
+    color: var(--light-color);
+    text-shadow: var(--text-shadow);
+    margin-bottom: var(--spacing-sm);
+    letter-spacing: 1px;
+}
 
-/* Achievements system */
-@import url('modules/achievements.css');
+button {
+    font-family: var(--main-font);
+    cursor: pointer;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--button-radius);
+    background-color: var(--primary-color);
+    color: white;
+    transition: all var(--transition-speed);
+    text-shadow: var(--text-shadow);
+    outline: none;
+    image-rendering: var(--pixel-smooth);
+}
 
-/* Quests and daily rewards */
-@import url('modules/quests.css');
+button:hover {
+    transform: scale(1.05);
+    box-shadow: var(--box-shadow);
+}
 
-/* Leaderboard */
-@import url('modules/leaderboard.css');
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: scale(1);
+    box-shadow: none;
+}
 
-/* Shop system */
-@import url('modules/shop.css');
+input, select, textarea {
+    font-family: var(--main-font);
+    padding: var(--spacing-sm);
+    border: 2px solid var(--gray-color);
+    border-radius: var(--button-radius);
+    outline: none;
+    transition: border-color var(--transition-speed);
+}
 
-/* iOS Font Fix - Đặt sau các module chính để ghi đè các style cần thiết */
-@import url('modules/ios-font-fix.css');
+input:focus, select:focus, textarea:focus {
+    border-color: var(--primary-color);
+}
 
-/* Responsive design - Đặt cuối cùng để có thể ghi đè các style cần thiết theo kích thước màn hình */
-@import url('modules/responsive.css');
+a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: color var(--transition-speed);
+}
+
+a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+/* UI popup common styles */
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--dark-transparent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-speed);
+    font-family: var(--main-font);
+}
+
+.popup.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-content {
+    background-color: var(--dark-color);
+    border: 3px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    max-width: 90%;
+    max-height: 90%;
+    width: 500px;
+    overflow-y: auto;
+    position: relative;
+    transform: translateY(-20px);
+    transition: transform var(--transition-speed) var(--transition-bounce);
+    box-shadow: var(--box-shadow);
+}
+
+.popup.active .popup-content {
+    transform: translateY(0);
+}
+
+.close-button {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    background-color: var(--error-color);
+    color: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 20px;
+    border: 2px solid white;
+    transition: all var(--transition-speed);
+}
+
+.close-button:hover {
+    transform: scale(1.1);
+}
+
+/* Notification styles */
+.notification {
+    position: fixed;
+    top: var(--spacing-md);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--dark-transparent);
+    color: white;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--primary-color);
+    z-index: 2000;
+    box-shadow: var(--box-shadow);
+    font-family: var(--main-font);
+    max-width: 80%;
+    text-align: center;
+    opacity: 0;
+    transition: opacity var(--transition-speed), transform var(--transition-speed);
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.notification.success {
+    border-left-color: var(--success-color);
+}
+
+.notification.error {
+    border-left-color: var(--error-color);
+}
+
+.notification.warning {
+    border-left-color: var(--warning-color);
+}
+
+.notification.info {
+    border-left-color: var(--info-color);
+}
+
+/* Button styles */
+.btn-primary {
+    background-color: var(--primary-color);
+}
+
+.btn-secondary {
+    background-color: var(--secondary-color);
+}
+
+.btn-accent {
+    background-color: var(--accent-color);
+}
+
+.btn-warning {
+    background-color: var(--warning-color);
+}
+
+.btn-success {
+    background-color: var(--success-color);
+}
+
+.btn-error {
+    background-color: var(--error-color);
+}
+
+/* Utility classes */
+.hidden {
+    display: none !important;
+}
+
+.invisible {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-1 { margin-top: var(--spacing-sm); }
+.mt-2 { margin-top: var(--spacing-md); }
+.mt-3 { margin-top: var(--spacing-lg); }
+
+.mb-1 { margin-bottom: var(--spacing-sm); }
+.mb-2 { margin-bottom: var(--spacing-md); }
+.mb-3 { margin-bottom: var(--spacing-lg); }
+
+/* Animation frames for various effects */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slide-up {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes scale-in {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+.animate-fade-in {
+    animation: fade-in 0.5s forwards;
+}
+
+.animate-slide-up {
+    animation: slide-up 0.5s forwards;
+}
+
+.animate-scale-in {
+    animation: scale-in 0.5s forwards;
+}
+
+/* Điều chỉnh các class của phần thông báo */
+.game-message {
+    font-family: var(--main-font);
+}
+
+/* Điều chỉnh hiển thị font cho tất cả các phần tử */
+.tutorial-box, 
+.currency-display, 
+.shop-panel h2,
+.achievements-panel h2,
+.quests-panel h2,
+.leaderboard-panel h2,
+.character-panel h2,
+.equipment-detail h3,
+.plant-menu h2 {
+    font-family: var(--heading-font);
+}
+
+/* Đảm bảo tất cả các nội dung text đều sử dụng font đúng */
+.plant-item span,
+.stat-value,
+.stat-label,
+.inventory-header,
+.detail-name,
+.detail-type,
+.detail-description,
+.detail-effects,
+.shop-tabs button,
+.quests-content,
+.achievements-content,
+.leaderboard-content {
+    font-family: var(--main-font);
+}

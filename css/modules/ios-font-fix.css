@@ -1,48 +1,190 @@
 /* 
- * iOS Font Fix - Giải quyết vấn đề font hiển thị trên iOS
- * Đặc biệt cho iPhone 12 Pro Max và các thiết bị iOS khác
+ * iOS Font Fix
+ * File xử lý đặc biệt cho các thiết bị iOS để hiển thị font pixel đúng cách
+ * và hỗ trợ tốt hơn cho tiếng Việt với các dấu thanh và dấu phụ
  */
 
 /* Import font thích hợp cho iOS */
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
 
-/* Xử lý đặc biệt cho các thiết bị iOS */
+/* Kiểm tra iOS bằng -webkit-touch-callout chỉ có trên iOS */
+@supports (-webkit-touch-callout: none) {
+    /* Tinh chỉnh cách hiển thị font trên toàn bộ thiết bị iOS */
+    body, html, button, input, select, textarea {
+        /* Sử dụng Pixelify Sans như font chính, với các font dự phòng */
+        font-family: 'Pixelify Sans', 'Quicksand', 'VT323', -apple-system, BlinkMacSystemFont, sans-serif;
+        /* Tắt việc làm mịn font để giữ phong cách pixel */
+        -webkit-font-smoothing: none;
+        /* Tăng chút khoảng cách chữ để hiển thị dấu tiếng Việt tốt hơn */
+        letter-spacing: 0.5px;
+    }
+    
+    /* Xử lý đặc biệt cho các phần tử tiêu đề */
+    h1, h2, h3, h4, h5, h6 {
+        /* Font Pixelify Sans hiển thị tốt cho tiêu đề có tiếng Việt */
+        font-family: 'Pixelify Sans', 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+        /* Tăng letter-spacing để tránh chồng chữ với các dấu thanh, dấu phụ */
+        letter-spacing: 1px;
+        /* Tắt việc làm mịn font trên iOS */
+        -webkit-font-smoothing: none;
+    }
+    
+    /* Xử lý cho các phần tử hiển thị text trong game */
+    .plant-item span,
+    .currency-display,
+    .game-message,
+    .tutorial-box,
+    .shop-panel h2,
+    .achievements-panel h2,
+    .quests-panel h2,
+    .leaderboard-panel h2,
+    .character-panel h2,
+    .equipment-detail h3,
+    .plant-menu h2,
+    .stat-value,
+    .stat-label,
+    .inventory-header,
+    .detail-name,
+    .detail-type,
+    .detail-description,
+    .detail-effects,
+    .shop-tabs button,
+    .quests-content,
+    .achievements-content,
+    .leaderboard-content {
+        /* Áp dụng font tương thích iOS tốt */
+        font-family: 'Pixelify Sans', 'Quicksand', 'VT323', -apple-system, BlinkMacSystemFont, sans-serif;
+        /* Tăng line-height để tránh các dấu thanh bị cắt xén */
+        line-height: 1.4;
+    }
+    
+    /* Hiển thị số với font số đẹp */
+    .currency-display,
+    .number-display,
+    .points-effect,
+    .stat-value {
+        font-family: 'VT323', 'Pixelify Sans', monospace;
+        font-weight: bold;
+    }
+    
+    /* Xử lý riêng cho các nút */
+    button, .header-button, .close-button {
+        /* Tăng padding để tránh chữ tiếng Việt bị cắt xén */
+        padding-top: 4px;
+        padding-bottom: 6px;
+        /* Đảm bảo dấu thanh hiển thị đầy đủ */
+        line-height: 1.3;
+        font-family: 'Pixelify Sans', 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
+    /* Xử lý kích thước cho các phần tử có kích thước cố định */
+    .popup-header h2,
+    .shop-header h2,
+    .achievements-header h2,
+    .quests-header h2,
+    .leaderboard-header h2,
+    .character-header h2 {
+        /* Giảm kích thước chữ tiêu đề trên iOS */
+        font-size: 16px;
+        font-family: 'Pixelify Sans', 'Press Start 2P', 'Quicksand', sans-serif;
+        font-weight: 700;
+    }
+    
+    /* Xử lý cho các phần tử nhỏ hơn */
+    .plant-item span,
+    .stat-label,
+    .stat-value,
+    .equipment-name,
+    .notification,
+    .loading-text,
+    .loading-tip {
+        /* Giảm kích thước và tăng line-height để hiển thị tốt hơn */
+        font-size: 13px;
+        line-height: 1.5;
+    }
+    
+    /* Xử lý riêng cho phần countdown khi phát hiện đăng nhập từ thiết bị khác */
+    .countdown-title,
+    .countdown-message,
+    .countdown-timer,
+    .exit-now-button {
+        font-family: 'Pixelify Sans', 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+}
+
+/* Xử lý chung cho các trình duyệt Webkit (Safari trên cả iOS và Mac) */
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
-    @supports (-webkit-touch-callout: none) {
-        /* Sửa đổi thứ tự ưu tiên font chữ cho iOS */
-        body, html, 
-        button, 
-        input,
-        .game-message, 
-        .currency-display, 
-        .tutorial-box, 
-        .popup-content,
-        .game-popup, 
-        h1, h2, h3, h4, h5, h6 {
-            /* iOS ưu tiên Press Start 2P */
-            font-family: 'Press Start 2P', 'VT323', -apple-system, BlinkMacSystemFont, sans-serif !important;
-            -webkit-font-smoothing: antialiased;
-            letter-spacing: -0.2px; /* Điều chỉnh khoảng cách chữ cho iOS */
-        }
-        
-        /* Điều chỉnh kích thước cho các phần tử cụ thể */
-        .currency-display {
-            font-size: 14px !important;
-        }
-        
-        .game-message {
-            font-size: 12px !important;
-        }
-        
-        /* Xử lý đặc biệt cho iPhone 12 Pro Max */
-        @media screen and (device-width: 428px) and (device-height: 926px) {
-            body, html {
-                font-size: 15px !important;
-            }
-            
-            .currency-display {
-                font-size: 13px !important;
-            }
-        }
+    /* Xử lý font pixel đặc biệt cho WebKit */
+    @font-face {
+        font-family: 'Pixelify Sans';
+        src: url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap');
+        font-display: swap;
+    }
+    
+    @font-face {
+        font-family: 'Quicksand';
+        src: url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+        font-display: swap;
+    }
+    
+    @font-face {
+        font-family: 'VT323';
+        src: url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        font-display: swap;
+    }
+
+    /* Tắt hình ảnh smoothing để giữ phong cách pixel */
+    img, .character-sprite-sheet {
+        image-rendering: pixelated;
+    }
+
+    /* Tăng độ rõ cho văn bản */
+    .game-message, .notification {
+        text-shadow: 0.5px 0.5px 0px rgba(0, 0, 0, 0.5);
+    }
+}
+
+/* Xử lý font cho các thiết bị Android */
+@supports not (-webkit-touch-callout: none) {
+    body, html, button, input, select, textarea {
+        /* Trên Android, sử dụng Pixelify Sans làm font chính vì nó hiển thị tiếng Việt tốt hơn */
+        font-family: 'Pixelify Sans', 'VT323', 'Quicksand', sans-serif;
+    }
+    
+    /* Hiển thị số với font số đẹp */
+    .currency-display,
+    .number-display,
+    .points-effect,
+    .stat-value {
+        font-family: 'VT323', monospace;
+        font-weight: bold;
+    }
+}
+
+/* Xử lý cho màn hình nhỏ như điện thoại */
+@media screen and (max-width: 480px) {
+    body, html {
+        /* Giảm kích thước font chung cho màn hình nhỏ */
+        font-size: 14px;
+    }
+    
+    /* Điều chỉnh các phần tử có kích thước cố định */
+    .popup-header h2,
+    .shop-header h2,
+    .achievements-header h2,
+    .quests-header h2,
+    .leaderboard-header h2,
+    .character-header h2 {
+        font-size: 14px;
+    }
+    
+    /* Giảm kích thước chữ của các phần tử nhỏ */
+    .plant-item span,
+    .stat-label,
+    .stat-value,
+    .equipment-name {
+        font-size: 12px;
     }
 }

@@ -1,0 +1,185 @@
+/* 
+ * Vietnamese Font Support for WonderFarm
+ * Provides pixel art fonts with Vietnamese character support
+ */
+
+/* Import các font pixel hỗ trợ tiếng Việt từ Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
+
+/* Font hỗ trợ tiếng Việt tốt từ Google Fonts làm backup */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap');
+
+/* Các biến font chung */
+:root {
+    --main-font: 'Pixelify Sans', 'VT323', 'Quicksand', sans-serif;
+    --display-font: 'VT323', 'Pixelify Sans', 'Quicksand', monospace;
+    --title-font: 'Press Start 2P', 'Pixelify Sans', 'Bungee', sans-serif;
+    --button-font: 'Silkscreen', 'Pixelify Sans', 'Patrick Hand SC', sans-serif;
+    --number-font: 'VT323', 'Press Start 2P', monospace;
+    
+    /* Biến hiển thị tiếng Việt */
+    --vietnamese-text-font: 'Pixelify Sans', 'Quicksand', sans-serif;
+    
+    /* Biến font cho màn hình loading */
+    --loading-font: 'Pixelify Sans', 'Quicksand', sans-serif;
+    --loading-tips-font: 'Quicksand', 'Pixelify Sans', sans-serif;
+}
+
+/* Fix hiển thị font trên thiết bị iOS */
+@supports (-webkit-touch-callout: none) {
+    :root {
+        /* iOS có thể có vấn đề với một số pixel fonts nên ta dùng fallback */
+        --main-font: 'Pixelify Sans', 'Quicksand', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        --display-font: 'VT323', 'Quicksand', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        --title-font: 'Pixelify Sans', 'Quicksand', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        --button-font: 'Pixelify Sans', 'Quicksand', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+        --loading-font: 'Pixelify Sans', 'Quicksand', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+}
+
+/* Android device optimization */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    @supports not (-webkit-touch-callout: none) {
+        :root {
+            --main-font: 'Pixelify Sans', 'VT323', 'Quicksand', sans-serif;
+            --display-font: 'VT323', 'Pixelify Sans', 'Quicksand', monospace;
+            --title-font: 'Pixelify Sans', 'Press Start 2P', 'Quicksand', sans-serif;
+            --button-font: 'Pixelify Sans', 'Silkscreen', 'Quicksand', sans-serif;
+        }
+    }
+}
+
+/* Thiết lập cơ bản cho toàn bộ game */
+body {
+    font-family: var(--main-font);
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+    font-display: swap;
+}
+
+/* Đảm bảo pixel rendering cho các phần tử */
+.pixel-art {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+/* Thiết lập cho các tiêu đề */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--title-font);
+    letter-spacing: 0.5px;
+    font-weight: normal;
+}
+
+/* Thiết lập cho các nút */
+button, .button {
+    font-family: var(--button-font);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Lớp hỗ trợ cho đoạn text dài */
+.text-content {
+    font-family: var(--vietnamese-text-font);
+    line-height: 1.4;
+}
+
+/* Lớp hỗ trợ cho hiển thị số */
+.number-display {
+    font-family: var(--number-font);
+    font-weight: bold;
+}
+
+/* Lớp đặc biệt cho tiếng Việt */
+.vietnamese-text {
+    font-family: var(--vietnamese-text-font);
+    letter-spacing: 0.2px;
+}
+
+/* Các biến CSS Font cho các module khác sử dụng */
+:root {
+    --pixel-rendering: pixelated;
+    --text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Đảm bảo các dấu trong chữ tiếng Việt được hiển thị đúng */
+* {
+    text-rendering: optimizeLegibility;
+}
+
+/* Tối ưu hoá cho các dấu tiếng Việt */
+.vietnamese-accent {
+    position: relative;
+    display: inline-block;
+}
+
+/* Thiết lập font cho các thành phần cụ thể của game */
+.game-message {
+    font-family: var(--vietnamese-text-font);
+}
+
+.currency-display {
+    font-family: var(--number-font);
+}
+
+/* CSS cụ thể cho màn hình loading để hỗ trợ tiếng Việt */
+.loading-screen {
+    font-family: var(--loading-font);
+}
+
+.loading-text {
+    font-family: var(--loading-font);
+    font-size: 18px;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    font-weight: 500;
+    /* Đảm bảo hiển thị dấu tiếng Việt đúng */
+    padding: 5px;
+}
+
+.loading-tips {
+    font-family: var(--loading-tips-font);
+    font-size: 14px;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
+    color: #FFCC80;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    max-width: 85%;
+    text-align: center;
+    opacity: 0.9;
+    transition: opacity 0.3s;
+    /* Đảm bảo hiển thị dấu tiếng Việt đúng */
+    padding: 5px;
+}
+
+/* CSS cho countdown khi phát hiện đăng nhập từ thiết bị khác */
+.countdown-title,
+.countdown-message,
+.countdown-timer,
+.exit-now-button {
+    font-family: var(--vietnamese-text-font);
+}
+
+/* Đảm bảo CSS cho các thành phần khác */
+.panel-title {
+    font-family: var(--title-font);
+}
+
+/* Tối ưu hóa font loading cho màn hình nhỏ */
+@media screen and (max-width: 480px) {
+    .loading-text {
+        font-size: 16px;
+    }
+    
+    .loading-tips {
+        font-size: 12px;
+        max-width: 90%;
+    }
+}

@@ -217,19 +217,45 @@ export function detectPlatform() {
 let currentSessionInfo = null;
 let isInOfflineMode = false;
 
+// Mã debug để kiểm tra xem có lỗi khi lưu/tải dữ liệu
+const DEBUG_STORAGE = true;
+
 /**
  * Đăng ký phiên người dùng hiện tại lên Telegram Cloud
  * @returns {Promise<boolean>} Kết quả đăng ký
  */
 export async function registerSession() {
-    if (!window.Telegram || !window.Telegram.WebApp || !window.Telegram.WebApp.initDataUnsafe || !window.Telegram.WebApp.initDataUnsafe.user) {
-        console.warn('Không có thông tin người dùng Telegram');
+    if (!window.Telegram || !window.Telegram.WebApp) {
+        console.warn('Telegram WebApp API không khả dụng');
         return false;
     }
     
     try {
+        // Kiểm tra xem có initData không
+        const hasInitData = window.Telegram.WebApp.initData && window.Telegram.WebApp.initData.length > 0;
+        
         // Lấy thông tin người dùng từ Telegram WebApp
-        const userId = window.Telegram.WebApp.initDataUnsafe.user.id.toString();
+        let userId = 'unknown-user';
+        
+        if (window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
+            userId = window.Telegram.WebApp.initDataUnsafe.user.id.toString();
+            if (DEBUG_STORAGE) console.log('Đã tìm thấy userId từ initDataUnsafe:', userId);
+        } else if (hasInitData) {
+            // Thử phân tích initData nếu có
+            try {
+                const parsedData = JSON.parse(decodeURIComponent(window.Telegram.WebApp.initData));
+                if (parsedData && parsedData.user && parsedData.user.id) {
+                    userId = parsedData.user.id.toString();
+                    if (DEBUG_STORAGE) console.log('Đã tìm thấy userId từ initData phân tích:', userId);
+                }
+            } catch (e) {
+                console.warn('Không thể phân tích initData:', e);
+            }
+        } else {
+            if (DEBUG_STORAGE) console.warn('Không có thông tin người dùng Telegram, sử dụng ID tạm thời');
+            // Sử dụng một ID ngẫu nhiên để phân biệt giữa các phiên
+            userId = 'temp-' + Date.now().toString();
+        }
         
         // Tạo device ID mới nếu chưa có
         if (!currentSessionInfo || !currentSessionInfo.deviceId) {
@@ -245,19 +271,30 @@ export async function registerSession() {
                 timestamp,
                 active: true
             };
+            
+            if (DEBUG_STORAGE) console.log('Đã tạo thông tin phiên mới:', currentSessionInfo);
         }
         
         // Lưu thông tin phiên lên Telegram Cloud
         if (window.Telegram.WebApp.CloudStorage) {
+            if (DEBUG_STORAGE) console.log('CloudStorage API khả dụng, đang lưu phiên...');
+            
             return new Promise((resolve) => {
                 window.Telegram.WebApp.CloudStorage.setItem('wonderFarm_activeSession', 
-                    JSON.stringify(currentSessionInfo), (success) => {
-                        resolve(success);
+                    JSON.stringify(currentSessionInfo), (success, error) => {
+                        if (success) {
+                            if (DEBUG_STORAGE) console.log('Lưu phiên thành công');
+                            resolve(true);
+                        } else {
+                            console.error('Lỗi khi lưu phiên:', error);
+                            resolve(false);
+                        }
                 });
             });
+        } else {
+            if (DEBUG_STORAGE) console.warn('CloudStorage API không khả dụng');
+            return true; // Vẫn trả về true để không gây gián đoạn luồng game
         }
-        
-        return true;
     } catch (e) {
         console.error('Lỗi khi đăng ký phiên:', e);
         return false;
@@ -265,11 +302,30 @@ export async function registerSession() {
 }
 
 /**
+ * Kiểm tra xem Cloud Storage API có sẵn và khởi tạo đúng không
+ * @returns {boolean} true nếu API sẵn sàng
+ */
+function isCloudStorageAvailable() {
+    if (!window.Telegram || !window.Telegram.WebApp || !window.Telegram.WebApp.CloudStorage) {
+        return false;
+    }
+    
+    // Kiểm tra xem CloudStorage có các phương thức cần thiết không
+    if (typeof window.Telegram.WebApp.CloudStorage.getItem !== 'function' || 
+        typeof window.Telegram.WebApp.CloudStorage.setItem !== 'function') {
+        return false;
+    }
+    
+    return true;
+}
+
+/**
  * Kiểm tra xem có phiên đăng nhập từ thiết bị khác đang hoạt động không
  * @returns {Promise<boolean>} true nếu phát hiện phiên từ thiết bị khác, false nếu không
  */
 export async function checkActiveSession() {
-    if (!window.Telegram || !window.Telegram.WebApp || !window.Telegram.WebApp.CloudStorage) {
+    if (!isCloudStorageAvailable()) {
+        if (DEBUG_STORAGE) console.warn('CloudStorage không khả dụng để kiểm tra phiên');
         return false;
     }
     
@@ -284,13 +340,21 @@ export async function checkActiveSession() {
         // Lấy thông tin phiên từ Cloud Storage
         return new Promise((resolve) => {
             window.Telegram.WebApp.CloudStorage.getItem('wonderFarm_activeSession', (result, error) => {
-                if (error || !result) {
+                if (error) {
+                    console.error('Lỗi khi đọc phiên từ CloudStorage:', error);
+                    resolve(false);
+                    return;
+                }
+                
+                if (!result) {
+                    if (DEBUG_STORAGE) console.log('Không tìm thấy phiên đăng nhập nào');
                     resolve(false);
                     return;
                 }
                 
                 try {
                     const activeSession = JSON.parse(result);
+                    if (DEBUG_STORAGE) console.log('Phiên đăng nhập đã tải:', activeSession);
                     
                     // Nếu phiên đang hoạt động khác với phiên hiện tại
                     if (activeSession.deviceId !== currentSessionInfo.deviceId) {
@@ -368,7 +432,7 @@ export function isOfflineMode() {
  * @returns {Promise} - Promise giải quyết khi lưu thành công
  */
 export function saveGameToTelegramCloud(state) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         try {
             // Kiểm tra nếu đang ở chế độ offline, không lưu dữ liệu
             if (isOfflineMode()) {
@@ -378,23 +442,45 @@ export function saveGameToTelegramCloud(state) {
             }
 
             // Kiểm tra API Telegram WebApp có khả dụng không
-            if (!window.Telegram || !window.Telegram.WebApp || !window.Telegram.WebApp.CloudStorage) {
+            if (!isCloudStorageAvailable()) {
                 console.warn('Telegram CloudStorage API không khả dụng');
-                resolve(false);
+                // Sử dụng localStorage làm giải pháp dự phòng
+                try {
+                    localStorage.setItem('wonderFarmGameState', JSON.stringify(state));
+                    if (DEBUG_STORAGE) console.log('Đã lưu dữ liệu vào localStorage do CloudStorage không khả dụng');
+                    resolve(true);
+                } catch (localStorageError) {
+                    console.error('Không thể lưu vào localStorage:', localStorageError);
+                    resolve(false);
+                }
                 return;
             }
 
             // Chuẩn bị dữ liệu để lưu
             const gameData = JSON.stringify(state);
             
+            if (DEBUG_STORAGE) console.log('Đang lưu dữ liệu game vào CloudStorage:', {
+                dataSize: gameData.length,
+                sample: '...' + gameData.substring(0, 100) + '...'
+            });
+            
             // Sử dụng Telegram WebApp để lưu trữ
             window.Telegram.WebApp.CloudStorage.setItem('wonderFarmGameState', gameData, (success, error) => {
                 if (success) {
-                    console.log('Game đã lưu vào Telegram Cloud Storage thành công');
+                    if (DEBUG_STORAGE) console.log('Game đã lưu vào Telegram Cloud Storage thành công');
                     resolve(true);
                 } else {
                     console.error('Lỗi khi lưu vào Telegram Cloud Storage:', error);
-                    resolve(false);
+                    
+                    // Thử lưu vào localStorage nếu CloudStorage thất bại
+                    try {
+                        localStorage.setItem('wonderFarmGameState', gameData);
+                        if (DEBUG_STORAGE) console.log('Đã lưu dữ liệu vào localStorage do lưu CloudStorage thất bại');
+                        resolve(true);
+                    } catch (localStorageError) {
+                        console.error('Không thể lưu vào localStorage:', localStorageError);
+                        resolve(false);
+                    }
                 }
             });
         } catch (e) {
@@ -409,37 +495,80 @@ export function saveGameToTelegramCloud(state) {
  * @returns {Promise} - Promise giải quyết với dữ liệu game được tải
  */
 export function loadGameFromTelegramCloud() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         try {
             // Kiểm tra API Telegram WebApp có khả dụng không
-            if (!window.Telegram || !window.Telegram.WebApp || !window.Telegram.WebApp.CloudStorage) {
-                console.warn('Telegram CloudStorage API không khả dụng');
-                resolve(null);
+            if (!isCloudStorageAvailable()) {
+                if (DEBUG_STORAGE) console.warn('Telegram CloudStorage API không khả dụng, thử tải từ localStorage');
+                // Thử tải từ localStorage nếu có
+                const localData = localStorage.getItem('wonderFarmGameState');
+                if (localData) {
+                    try {
+                        const parsedData = JSON.parse(localData);
+                        if (DEBUG_STORAGE) console.log('Đã tải dữ liệu từ localStorage');
+                        resolve(parsedData);
+                    } catch (parseError) {
+                        console.error('Lỗi khi phân tích dữ liệu từ localStorage:', parseError);
+                        resolve(null);
+                    }
+                } else {
+                    if (DEBUG_STORAGE) console.log('Không có dữ liệu nào trong localStorage');
+                    resolve(null);
+                }
                 return;
             }
 
+            if (DEBUG_STORAGE) console.log('Đang tải dữ liệu từ CloudStorage...');
+            
             // Thử tải từ Telegram Cloud
             window.Telegram.WebApp.CloudStorage.getItem('wonderFarmGameState', (result, error) => {
-                if (result) {
-                    try {
-                        const loadedState = JSON.parse(result);
-                        console.log('Game đã được tải từ Telegram Cloud Storage');
-                        resolve(loadedState);
-                    } catch (parseError) {
-                        console.error('Lỗi phân tích dữ liệu từ Telegram Cloud:', parseError);
-                        resolve(null);
-                    }
-                } else if (error) {
+                if (error) {
                     console.error('Lỗi khi tải từ Telegram Cloud:', error);
-                    resolve(null);
-                } else {
-                    console.log('Không tìm thấy dữ liệu trên Telegram Cloud');
-                    resolve(null);
+                    fallbackToLocalStorage();
+                    return;
+                }
+                
+                if (!result) {
+                    if (DEBUG_STORAGE) console.log('Không tìm thấy dữ liệu trên Telegram Cloud');
+                    fallbackToLocalStorage();
+                    return;
+                }
+                
+                try {
+                    const loadedState = JSON.parse(result);
+                    if (DEBUG_STORAGE) console.log('Game đã được tải từ Telegram Cloud Storage:', {
+                        dataSize: result.length,
+                        sample: '...' + result.substring(0, 100) + '...'
+                    });
+                    resolve(loadedState);
+                } catch (parseError) {
+                    console.error('Lỗi phân tích dữ liệu từ Telegram Cloud:', parseError);
+                    fallbackToLocalStorage();
                 }
             });
+            
+            // Hàm nội bộ để fallback sang localStorage
+            function fallbackToLocalStorage() {
+                if (DEBUG_STORAGE) console.log('Đang thử tải từ localStorage...');
+                
+                try {
+                    const localData = localStorage.getItem('wonderFarmGameState');
+                    if (localData) {
+                        const parsedData = JSON.parse(localData);
+                        if (DEBUG_STORAGE) console.log('Đã tải dữ liệu từ localStorage');
+                        resolve(parsedData);
+                    } else {
+                        if (DEBUG_STORAGE) console.log('Không tìm thấy dữ liệu trong localStorage');
+                        resolve(null);
+                    }
+                } catch (e) {
+                    console.error('Lỗi khi tải từ localStorage:', e);
+                    resolve(null);
+                }
+            }
         } catch (e) {
             console.error('Lỗi tổng thể khi tải game:', e);
-            reject(e);
+            resolve(null);
         }
     });
 }
@@ -491,8 +620,40 @@ export async function saveAllGameData(state) {
             return false;
         }
         
+        // Kiểm tra xem có thông tin người chơi cần thiết không
+        if (!state || typeof state !== 'object') {
+            console.error('Dữ liệu game không hợp lệ, không thể lưu');
+            return false;
+        }
+        
+        // Đảm bảo có đủ thông tin để nhận dạng người chơi
+        if (window.Telegram && window.Telegram.WebApp && 
+            window.Telegram.WebApp.initDataUnsafe && 
+            window.Telegram.WebApp.initDataUnsafe.user) {
+            
+            const user = window.Telegram.WebApp.initDataUnsafe.user;
+            
+            // Thêm metadata người chơi vào dữ liệu nếu chưa có
+            if (!state.playerInfo) {
+                state.playerInfo = {
+                    id: user.id,
+                    username: user.username || 'unknown',
+                    firstName: user.first_name || '',
+                    lastName: user.last_name || '',
+                    lastSaved: new Date().toISOString()
+                };
+            } else {
+                // Cập nhật thời gian lưu mới nhất
+                state.playerInfo.lastSaved = new Date().toISOString();
+            }
+            
+            if (DEBUG_STORAGE) console.log('Đã thêm thông tin người chơi vào dữ liệu game:', state.playerInfo);
+        }
+        
         // Lưu vào Telegram Cloud
-        return await saveGameToTelegramCloud(state);
+        const saveResult = await saveGameToTelegramCloud(state);
+        if (DEBUG_STORAGE) console.log('Kết quả lưu dữ liệu:', saveResult ? 'Thành công' : 'Thất bại');
+        return saveResult;
     } catch (e) {
         console.error('Lỗi khi lưu dữ liệu game:', e);
         return false;
