@@ -744,13 +744,22 @@ function harvestAllPlants() {
 }
 
 /**
- * Save game state to localStorage
+ * Save game state to Telegram Cloud and localStorage
  */
 function saveGameState() {
     try {
-        localStorage.setItem('wonderFarmGameState', JSON.stringify(gameState));
+        // Import hàm saveAllGameData từ utils.js
+        import('./utils.js').then(utils => {
+            utils.saveAllGameData(gameState);
+        }).catch(e => {
+            console.error('Error importing utils module:', e);
+            // Fallback sang phương thức cũ
+            localStorage.setItem('wonderFarmGameState', JSON.stringify(gameState));
+        });
     } catch (e) {
         console.error('Error saving game state:', e);
+        // Fallback sang phương thức cũ
+        localStorage.setItem('wonderFarmGameState', JSON.stringify(gameState));
     }
 }
 

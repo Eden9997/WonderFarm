@@ -27,5 +27,8 @@
 /* Shop system */
 @import url('modules/shop.css');
 
-/* Responsive design */
+/* iOS Font Fix - Đặt sau các module chính để ghi đè các style cần thiết */
+@import url('modules/ios-font-fix.css');
+
+/* Responsive design - Đặt cuối cùng để có thể ghi đè các style cần thiết theo kích thước màn hình */
 @import url('modules/responsive.css');

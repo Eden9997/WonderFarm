@@ -4,7 +4,7 @@ import { playSound } from './audioSystem.js';
 import { updateMoneyDisplay, showMessage, showComboEffect, createPixelHarvestEffect } from './uiSystem.js';
 import { checkAchievements } from './achievementSystem.js';
 import { updateDailyQuestProgress } from './questSystem.js';
-import { getPlantDisplayName } from './utils.js';
+import { getPlantDisplayName, saveAllGameData } from './utils.js';
 import { applyGrowthTimeReduction, applyHarvestValueBonus, applyHarvestTimeReduction } from './characterSystem.js';
 
 export function plantCrop(cell, plantType) {
@@ -38,12 +38,20 @@ export function plantCrop(cell, plantType) {
         growthTime: reducedGrowthTime,
         baseGrowthTime: baseGrowthTime // Store base time for reference
     };
-
+    
     gameState.plants.push(plant);
+    gameState.plantsPlanted++;
+    
+    // Cập nhật nhiệm vụ hàng ngày
+    updateDailyQuestProgress('plant_amount', 1);
+    
     renderPlantStage(plant);
     startGrowthAnimation(plant);
     playSound('plant');
     showPlantingEffect(cell, plantType);
+    
+    // Lưu dữ liệu game lên Telegram Cloud sau khi trồng cây
+    saveAllGameData(gameState);
 }
 
 export function harvestPlant(plant) {
@@ -128,6 +136,9 @@ export function harvestPlant(plant) {
     updateDailyQuestProgress('harvest_crop', 1, plant.type);
     updateDailyQuestProgress('consecutive_harvests', 1);
     updateDailyQuestProgress('earn_coins', harvestValue); // Update with actual value earned
+    
+    // Lưu dữ liệu game lên Telegram Cloud sau khi thu hoạch
+    saveAllGameData(gameState);
 }
 
 function renderPlantStage(plant) {

@@ -1,0 +1,48 @@
+/* 
+ * iOS Font Fix - Giải quyết vấn đề font hiển thị trên iOS
+ * Đặc biệt cho iPhone 12 Pro Max và các thiết bị iOS khác
+ */
+
+/* Import font thích hợp cho iOS */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+/* Xử lý đặc biệt cho các thiết bị iOS */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    @supports (-webkit-touch-callout: none) {
+        /* Sửa đổi thứ tự ưu tiên font chữ cho iOS */
+        body, html, 
+        button, 
+        input,
+        .game-message, 
+        .currency-display, 
+        .tutorial-box, 
+        .popup-content,
+        .game-popup, 
+        h1, h2, h3, h4, h5, h6 {
+            /* iOS ưu tiên Press Start 2P */
+            font-family: 'Press Start 2P', 'VT323', -apple-system, BlinkMacSystemFont, sans-serif !important;
+            -webkit-font-smoothing: antialiased;
+            letter-spacing: -0.2px; /* Điều chỉnh khoảng cách chữ cho iOS */
+        }
+        
+        /* Điều chỉnh kích thước cho các phần tử cụ thể */
+        .currency-display {
+            font-size: 14px !important;
+        }
+        
+        .game-message {
+            font-size: 12px !important;
+        }
+        
+        /* Xử lý đặc biệt cho iPhone 12 Pro Max */
+        @media screen and (device-width: 428px) and (device-height: 926px) {
+            body, html {
+                font-size: 15px !important;
+            }
+            
+            .currency-display {
+                font-size: 13px !important;
+            }
+        }
+    }
+}

@@ -2,6 +2,7 @@ import { config } from './config.js';
 import { gameState } from './gameState.js';
 import { playSound } from './audioSystem.js';
 import { updateMoneyDisplay, showMessage } from './uiSystem.js';
+import { saveAllGameData } from './utils.js';
 
 export function checkAchievements() {
     // Kiểm tra thành tựu về số lượng thu hoạch
@@ -44,6 +45,9 @@ function unlockAchievement(achievement) {
     updateMoneyDisplay();
     showAchievementNotification(achievement);
     playSound('achievement');
+    
+    // Lưu dữ liệu game lên Telegram Cloud khi mở khóa thành tựu mới
+    saveAllGameData(gameState);
 }
 
 function showAchievementNotification(achievement) {

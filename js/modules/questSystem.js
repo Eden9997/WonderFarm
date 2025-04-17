@@ -2,7 +2,7 @@ import { config } from './config.js';
 import { gameState } from './gameState.js';
 import { playSound } from './audioSystem.js';
 import { updateMoneyDisplay, showMessage } from './uiSystem.js';
-import { isNewDay, shuffleArray } from './utils.js';
+import { isNewDay, shuffleArray, saveAllGameData } from './utils.js';
 
 export function initDailyQuests() {
     checkAndRefreshDailyQuests();
@@ -100,6 +100,9 @@ function completeQuest(quest) {
     }
     
     renderQuestsList();
+    
+    // Lưu dữ liệu game lên Telegram Cloud khi hoàn thành nhiệm vụ
+    saveAllGameData(gameState);
 }
 
 function showQuestNotification(quest) {
@@ -161,6 +164,9 @@ export function claimQuestReward(questId) {
         showMessage(`Đã nhận ${quest.reward} xu từ nhiệm vụ!`);
         playSound('achievement');
         renderQuestsList();
+        
+        // Lưu dữ liệu game lên Telegram Cloud khi nhận thưởng nhiệm vụ
+        saveAllGameData(gameState);
     }
 }
 
@@ -172,6 +178,9 @@ function checkAndRefreshDailyQuests() {
         resetDailyStats();
         generateDailyQuests();
         gameState.dailyQuests.lastRefresh = now.toISOString();
+        
+        // Lưu dữ liệu game lên Telegram Cloud khi làm mới nhiệm vụ hàng ngày
+        saveAllGameData(gameState);
     }
 }
 

@@ -5,15 +5,35 @@
     box-sizing: border-box;
 }
 
+/* Khai báo font chính xác */
 @font-face {
     font-family: 'PixelFont';
-    src: url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    src: url('../../fonts/pixel_font.ttf') format('truetype');
     font-display: swap;
 }
 
+@font-face {
+    font-family: 'VT323';
+    src: url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Press Start 2P';
+    src: url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Import font trực tiếp từ Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
 /* Base styles and global font settings */
 body, html {
-    font-family: 'VT323', 'Press Start 2P', 'PixelFont', monospace;
+    font-family: 'VT323', 'Press Start 2P', monospace;
     font-size: 16px;
     color: #ffffff;
     margin: 0;
@@ -26,8 +46,8 @@ body, html {
     -moz-osx-font-smoothing: grayscale;
 }
 
+/* Thay thế bằng khai báo chỉ chứa các thuộc tính không phải font */
 body {
-    font-family: 'Arial', sans-serif;
     background-color: #f0f0f0;
     height: 100vh;
     overflow: hidden;
@@ -268,14 +288,14 @@ body {
 
 /* Ensure consistent button styling across the game */
 button {
-    font-family: 'VT323', 'Press Start 2P', 'PixelFont', monospace;
+    font-family: 'VT323', 'Press Start 2P', monospace;
     cursor: pointer;
     transition: all 0.2s;
 }
 
 /* Common headings styling */
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'VT323', 'Press Start 2P', 'PixelFont', monospace;
+    font-family: 'VT323', 'Press Start 2P', monospace;
     margin: 0;
     padding: 0;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
@@ -296,7 +316,7 @@ h1, h2, h3, h4, h5, h6 {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease;
-    font-family: 'VT323', 'Press Start 2P', 'PixelFont', monospace;
+    font-family: 'VT323', 'Press Start 2P', monospace;
 }
 
 .game-popup.show {
@@ -345,4 +365,274 @@ h1, h2, h3, h4, h5, h6 {
 
 .popup-close:hover {
     transform: scale(1.1);
+}
+
+/* Loading screen styles */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #3d7d30;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    transition: opacity 0.5s ease-out;
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-logo {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 30px;
+    background-image: url('../img/plant/Watermelon.png');
+    background-size: 400% 100%;
+    background-position: 100% 0;
+    animation: pulse 1.5s ease-in-out infinite alternate;
+}
+
+.loading-progress-container {
+    width: 80%;
+    max-width: 300px;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.loading-progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: #fc9003;
+    transition: width 0.3s ease;
+    border-radius: 10px;
+    position: relative;
+}
+
+.loading-progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    animation: shine 1.5s linear infinite;
+}
+
+.loading-text {
+    margin-top: 20px;
+    font-size: 18px;
+    color: white;
+    font-family: 'Pixelify Sans', sans-serif;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.loading-tips {
+    position: absolute;
+    bottom: 50px;
+    text-align: center;
+    max-width: 80%;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 14px;
+    font-style: italic;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Styles for offline mode notifications */
+.offline-banner {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(255, 204, 0, 0.9);
+    color: #000;
+    padding: 8px 15px;
+    border-radius: 8px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    animation: fadeInDown 0.5s, pulse 2s infinite alternate;
+    font-family: 'Press Start 2P', 'VT323', monospace;
+}
+
+.offline-icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.offline-message {
+    display: flex;
+    flex-direction: column;
+}
+
+.offline-title {
+    font-weight: bold;
+    margin-bottom: 3px;
+    font-size: 14px;
+}
+
+.offline-description {
+    font-size: 10px;
+}
+
+.online-notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(46, 204, 113, 0.9);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    animation: slideUp 0.5s, fadeOut 0.5s 4.5s forwards;
+    font-family: 'Press Start 2P', 'VT323', monospace;
+    font-size: 12px;
+}
+
+.online-icon {
+    font-size: 18px;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translate(-50%, 20px);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -20px);
+    }
+}
+
+/* Mobile adjustments for offline banner */
+@media screen and (max-width: 480px) {
+    .offline-banner {
+        padding: 6px 12px;
+        width: 90%;
+    }
+    
+    .offline-title {
+        font-size: 12px;
+    }
+    
+    .offline-description {
+        font-size: 8px;
+    }
+    
+    .offline-icon {
+        font-size: 20px;
+        margin-right: 8px;
+    }
+}
+
+/* Media queries cho từng nền tảng */
+/* Xử lý đặc biệt cho iOS */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    @supports (-webkit-touch-callout: none) {
+        body, html, button, .game-message, .currency-display, 
+        .tutorial-box, .game-popup, h1, h2, h3, h4, h5, h6 {
+            font-family: 'Press Start 2P', 'VT323', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+    }
+}
+
+/* Xử lý cho các thiết bị màn hình nhỏ (điện thoại) */
+@media screen and (max-width: 767px) {
+    body, html {
+        font-size: 14px;
+    }
+    
+    .currency-display {
+        font-size: 14px;
+    }
+    
+    .game-message {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+}
+
+/* Xử lý cho màn hình trung bình (tablet) */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+    body, html {
+        font-size: 15px;
+    }
+}
+
+/* Xử lý cho màn hình lớn (desktop) */
+@media screen and (min-width: 1024px) {
+    body, html {
+        font-size: 16px;
+    }
 }
