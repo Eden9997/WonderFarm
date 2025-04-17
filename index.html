@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="vi" id="telegram-webapp">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="orientation" content="portrait">
+    <meta name="screen-orientation" content="portrait">
+    <!-- Thêm meta tag cho Telegram Mini App -->
+    <meta name="telegram:channel" content="@WonderFarm">
     <title>Wonder Farm</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -261,6 +263,47 @@
                 </div>
                 <div class="shop-items" id="shop-items">
                     <!-- Danh sách sản phẩm cửa hàng sẽ được tạo bằng JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Thanh công cụ nhanh trượt lên -->
+        <div id="quick-toolbar" class="quick-toolbar">
+            <div class="toolbar-handle" id="toolbar-handle">
+                <div class="handle-icon">⌄</div>
+            </div>
+            <div class="toolbar-content">
+                <div class="toolbar-section">
+                    <div class="toolbar-button" id="quick-shop" title="Cửa hàng">
+                        <div class="toolbar-icon">🛒</div>
+                        <div class="toolbar-label">Cửa hàng</div>
+                    </div>
+                    <div class="toolbar-button" id="quick-quests" title="Nhiệm vụ">
+                        <div class="toolbar-icon">📋</div>
+                        <div class="toolbar-label">Nhiệm vụ</div>
+                    </div>
+                    <div class="toolbar-button" id="quick-character" title="Nhân vật">
+                        <div class="toolbar-icon">👤</div>
+                        <div class="toolbar-label">Nhân vật</div>
+                    </div>
+                    <div class="toolbar-button" id="quick-achievements" title="Thành tựu">
+                        <div class="toolbar-icon">🏆</div>
+                        <div class="toolbar-label">Thành tựu</div>
+                    </div>
+                </div>
+                <div class="toolbar-section">
+                    <div class="toolbar-button" id="quick-leaderboard" title="Bảng xếp hạng">
+                        <div class="toolbar-icon">🥇</div>
+                        <div class="toolbar-label">Xếp hạng</div>
+                    </div>
+                    <div class="toolbar-button" id="quick-share" title="Chia sẻ">
+                        <div class="toolbar-icon">📤</div>
+                        <div class="toolbar-label">Chia sẻ</div>
+                    </div>
+                    <div class="toolbar-button" id="quick-settings" title="Cài đặt">
+                        <div class="toolbar-icon">⚙️</div>
+                        <div class="toolbar-label">Cài đặt</div>
+                    </div>
                 </div>
             </div>
         </div>
