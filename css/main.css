@@ -1,0 +1,31 @@
+/* Main CSS file that imports all modules */
+
+/* Base styles and resets */
+@import url('modules/base.css');
+
+/* Grid layout */
+@import url('modules/grid.css');
+
+/* Plants and planting menu */
+@import url('modules/plants.css');
+
+/* Visual effects and animations */
+@import url('modules/effects.css');
+
+/* Character system */
+@import url('modules/character.css');
+
+/* Achievements system */
+@import url('modules/achievements.css');
+
+/* Quests and daily rewards */
+@import url('modules/quests.css');
+
+/* Leaderboard */
+@import url('modules/leaderboard.css');
+
+/* Shop system */
+@import url('modules/shop.css');
+
+/* Responsive design */
+@import url('modules/responsive.css');

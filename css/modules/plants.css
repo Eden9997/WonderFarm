@@ -1,0 +1,266 @@
+/* Plants and plant menu styles */
+.plant {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.fully-grown {
+    animation: grow-shine 1.5s infinite alternate;
+    transform-origin: bottom center;
+    border-radius: 40%;
+    overflow: visible;
+}
+
+@keyframes grow-shine {
+    0% {
+        filter: brightness(1) drop-shadow(0 0 3px rgba(255, 255, 150, 0));
+    }
+    50% {
+        filter: brightness(1.5) drop-shadow(0 0 10px rgba(255, 255, 150, 0.7));
+    }
+    100% {
+        filter: brightness(1.2) drop-shadow(0 0 6px rgba(255, 255, 150, 0.4));
+    }
+}
+
+.harvest-button {
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    width: 30px;
+    height: 30px;
+    background-color: #FF9800;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 5;
+    font-size: 16px;
+    box-shadow: 0 0 0 2px #FFC107, 0 0 0 4px rgba(255, 255, 255, 0.7), 0 4px 6px rgba(0,0,0,0.4);
+    border: 2px solid white;
+    transition: all 0.2s;
+    animation: harvest-pulse 1.5s infinite alternate;
+    transform-origin: center;
+    font-family: 'Press Start 2P', 'PixelFont', cursive;
+}
+
+@keyframes harvest-pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 2px #FFC107, 0 0 0 4px rgba(255, 255, 255, 0.7), 0 4px 6px rgba(0,0,0,0.4);
+    }
+    100% {
+        transform: scale(1.15);
+        box-shadow: 0 0 0 2px #FFC107, 0 0 0 4px rgba(255, 255, 255, 0.9), 0 4px 10px rgba(255, 215, 0, 0.7);
+    }
+}
+
+.harvest-button:hover {
+    transform: scale(1.2) rotate(15deg);
+    background-color: #FFC107;
+    box-shadow: 0 0 0 2px #FFC107, 0 0 0 4px white, 0 0 20px rgba(255, 215, 0, 0.8);
+}
+
+.harvest-button:active {
+    transform: scale(0.9);
+}
+
+/* Plant menu styles */
+.plant-menu {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(73, 160, 120, 0.95);
+    border-radius: 15px 15px 0 0;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    transition: transform 0.3s ease-out;
+    max-height: 70%;
+    overflow-y: auto;
+    padding-bottom: 20px;
+    backdrop-filter: blur(5px);
+    image-rendering: pixelated;
+    border: 4px solid #8fbc8f;
+    border-bottom: none;
+    max-width: inherit;
+    transform: translateY(100%);
+}
+
+.plant-menu.show {
+    transform: translateY(0);
+}
+
+.plant-menu.hidden {
+    transform: translateY(100%);
+}
+
+.menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 2px solid #8fbc8f;
+    background-color: rgba(50, 120, 80, 0.9);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.menu-header h2 {
+    font-size: 16px;
+    color: #fff;
+    font-weight: bold;
+    font-family: 'Press Start 2P', 'PixelFont', cursive;
+    text-shadow: 2px 2px 0 #000;
+    letter-spacing: 0.5px;
+}
+
+#close-menu {
+    background: #ec6a5e;
+    border: 2px solid #fff;
+    font-size: 14px;
+    color: white;
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #333;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.plant-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 10px;
+}
+
+.plant-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px 8px;
+    border-radius: 8px;
+    background-color: #60a06b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid #8fbc8f;
+    box-shadow: 0 2px 0 #2e5834, 0 3px 4px rgba(0,0,0,0.3);
+}
+
+.plant-item:hover, .plant-item:active {
+    background-color: #70c080;
+    border-color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 #2e5834, 0 5px 6px rgba(0,0,0,0.3);
+}
+
+.plant-item img {
+    width: 54px;
+    height: 54px;
+    object-fit: contain;
+    margin-bottom: 6px;
+    transition: transform 0.2s;
+    image-rendering: pixelated;
+    transform-origin: bottom;
+    filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.3));
+}
+
+.plant-item span {
+    font-size: 12px;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #333;
+    font-family: 'Press Start 2P', 'PixelFont', cursive;
+    letter-spacing: 0px;
+    line-height: 1.2;
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Plant seed price labels */
+.price-label {
+    margin-top: 4px;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 2px 5px;
+    border-radius: 8px;
+    font-size: 10px;
+    color: #FFD700;
+    font-family: 'Press Start 2P', 'PixelFont', cursive;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 215, 0, 0.5);
+    display: inline-block;
+    min-width: 60%;
+    text-align: center;
+}
+
+/* Style for items the player cannot afford */
+.plant-item.cannot-afford {
+    opacity: 0.7;
+    filter: grayscale(50%);
+    cursor: not-allowed;
+}
+
+.plant-item.cannot-afford .price-label {
+    color: #ff6b6b;
+    border-color: #ff6b6b;
+}
+
+/* Plant details in menu */
+.plant-info {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3px;
+    width: 100%;
+    font-family: 'Press Start 2P', 'PixelFont', cursive;
+    font-size: 9px;
+    color: white;
+    image-rendering: pixelated;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2px;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 2px 4px;
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.info-label {
+    font-size: 8px;
+    color: #aaffaa;
+    text-shadow: 1px 1px 0 #000;
+}
+
+.info-value {
+    font-size: 8px;
+    color: #ffffff;
+    text-shadow: 1px 1px 0 #000;
+}
+
+.growth-time {
+    color: #88ccff;
+}
+
+.harvest-value {
+    color: #ffdd44;
+}

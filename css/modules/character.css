@@ -1,0 +1,1051 @@
+/* Character and equipment system styles */
+.avatar-container {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #FFD700;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+    margin-right: 10px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.avatar-container:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+.character-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    image-rendering: pixelated;
+}
+
+/* Character panel styling */
+.character-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 3000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+}
+
+.character-panel.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.character-content {
+    background-color: rgba(30, 60, 60, 0.95);
+    border-radius: 10px;
+    border: 3px solid #FFD700;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    position: relative;
+    font-family: 'Press Start 2P', 'PixelFont', cursive;
+    display: flex;
+    flex-direction: column;
+}
+
+.character-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.character-header h2 {
+    color: #FFD700;
+    font-size: 16px;
+    margin: 0;
+    text-shadow: 1px 1px 2px black;
+}
+
+.close-character {
+    background: #ec6a5e;
+    border: 2px solid #fff;
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-shadow: 1px 1px 0 #333;
+}
+
+.character-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.character-preview {
+    width: 384px;
+    height: 384px;
+    position: relative;
+    margin: 0 auto 20px;
+    background-color: #2c3e50;
+    border-radius: 8px;
+    overflow: hidden; /* Ẩn các phần vượt ra ngoài */
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#character-canvas {
+    width: 100% !important;
+    height: 100% !important;
+    image-rendering: pixelated;
+    position: relative;
+    z-index: 10;
+    display: none; /* Hide the Phaser canvas */
+}
+
+/* Character sprite animations container for the preview panel */
+.character-preview-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+/* Individual character sprite sheets with animation */
+.character-preview-sprite {
+    width: 160px;  /* Doubled from 80px */
+    height: 160px; /* Doubled from 80px */
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: 400% 100%; /* 4 frames side by side */
+    image-rendering: pixelated;
+    transform: scale(1);
+    top: 50%;  /* Căn giữa theo chiều dọc */
+    left: 50%; /* Căn giữa theo chiều ngang */
+    margin-left: -80px; /* Lùi lại một nửa chiều rộng */
+    margin-top: -80px;  /* Lùi lại một nửa chiều cao */
+    background-position-x: -320px; /* Bắt đầu từ frame thứ 3 */
+}
+
+.preview-character-base {
+    background-image: url('../../img/Character/Character_base.png');
+    z-index: 2;
+}
+
+.preview-aprons {
+    background-image: url('../../img/Character/Aprons.png');
+    z-index: 5;
+}
+
+.preview-boots {
+    background-image: url('../../img/Character/Boots.png');
+    z-index: 3;
+}
+
+.preview-gloves {
+    background-image: url('../../img/Character/Gloves.png');
+    z-index: 4;
+}
+
+.preview-hat {
+    background-image: url('../../img/Character/Hat.png');
+    z-index: 6;
+}
+
+.preview-wings {
+    background-image: url('../../img/Character/Wings.png');
+    z-index: 1;
+}
+
+.preview-blackWings {
+    background-image: url('../../img/Character/BlackWings.png');
+    z-index: 1;
+}
+
+.preview-whiteWings {
+    background-image: url('../../img/Character/WhiteWings.png');
+    z-index: 1;
+}
+
+.character-stats {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: white;
+}
+
+.stat-item:last-child {
+    margin-bottom: 0;
+}
+
+.stat-label {
+    color: #8eff8e;
+}
+
+.stat-value {
+    color: #ffdd44;
+}
+
+/* Character equipment layout */
+.character-equipment-layout {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    width: 100%;
+    position: relative;
+    min-height: 240px;
+}
+
+.equipment-left, .equipment-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+}
+
+.equipment-left {
+    margin-right: 10px;
+    justify-content: space-between;
+}
+
+.equipment-right {
+    margin-left: 10px;
+    justify-content: space-between;
+}
+
+.character-center {
+    flex: 0 0 auto;
+    margin-top: 25px; /* Di chuyển nhân vật xuống dưới 1 chút */
+}
+
+.equipment-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.equipment-slot {
+    width: 64px;
+    height: 64px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.equipment-slot:hover {
+    transform: translateY(-2px);
+    border-color: #FFD700;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.equipment-slot.equipped {
+    border: 2px solid #8eff8e;
+    background-color: rgba(30, 75, 30, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    z-index: 2;
+}
+
+.equipment-image {
+    width: 48px;
+    height: 48px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: 5px;
+    margin-bottom: auto;
+    image-rendering: pixelated;
+}
+
+.equipment-slot .equipment-image {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    margin-top: 5px;
+    margin-bottom: auto;
+    image-rendering: pixelated;
+}
+
+.equipment-slot.equipped .equipment-image {
+    transform: scale(2);
+    transition: transform 0.3s ease;
+}
+
+.equipment-slot.equipped .wings-icon,
+.equipment-slot.equipped .blackWings-icon,
+.equipment-slot.equipped .whiteWings-icon {
+    transform: scale(1.0);
+    transition: transform 0.3s ease;
+}
+
+.equipment-name {
+    font-size: 8px;
+    color: white;
+    text-align: center;
+    width: 100%;
+    padding: 2px 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Character inventory */
+.inventory-section {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 15px;
+    margin-top: 10px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.inventory-header {
+    color: #FFD700;
+    font-size: 14px;
+    margin: 0 0 10px 0;
+    text-align: center;
+}
+
+.inventory-items {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+}
+
+.inventory-item {
+    width: 100%;
+    aspect-ratio: 1/1;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 0;
+}
+
+.inventory-item:hover {
+    transform: translateY(-2px);
+    border-color: #FFD700;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.item-image {
+    width: 90%;
+    height: 90%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0 auto;
+    image-rendering: pixelated;
+    position: relative;
+    top: -4px;
+}
+
+.item-name {
+    font-size: 8px;
+    font-family: Arial, sans-serif;
+    color: white;
+    text-align: center;
+    width: 100%;
+    padding: 2px 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    bottom: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: bold;
+}
+
+/* Equipment detail popup */
+.equipment-detail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 3100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+}
+
+.equipment-detail.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.detail-content {
+    background-color: rgba(30, 60, 60, 0.95);
+    border-radius: 10px;
+    border: 3px solid #FFD700;
+    width: 85%;
+    max-width: 350px;
+    padding: 20px;
+    position: relative;
+}
+
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.detail-header h3 {
+    color: #FFD700;
+    font-size: 16px;
+    margin: 0;
+    text-shadow: 1px 1px 2px black;
+}
+
+.close-detail {
+    background: #ec6a5e;
+    border: 2px solid #fff;
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.detail-main {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.detail-image-container {
+    width: 80px;
+    height: 80px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    position: relative;
+}
+
+.detail-image {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+    z-index: 1;
+}
+
+.detail-info {
+    flex: 1;
+}
+
+.detail-name {
+    font-size: 14px;
+    color: #8eff8e;
+    margin-bottom: 5px;
+}
+
+.detail-type {
+    font-size: 10px;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+.detail-description {
+    font-size: 10px;
+    color: white;
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
+
+.detail-effects {
+    margin-top: 15px;
+}
+
+.effect-item {
+    display: flex;
+    font-size: 10px;
+    margin-bottom: 5px;
+    color: #ffdd44;
+}
+
+.effect-item:before {
+    content: "•";
+    margin-right: 5px;
+}
+
+.detail-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 10px; /* Thêm khoảng cách giữa các nút */
+}
+
+.button-group {
+    display: flex;
+    gap: 10px; /* Khoảng cách giữa các nút */
+    justify-content: center;
+    width: 100%;
+}
+
+.equip-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-family: 'Press Start 2P', 'PixelFont', cursive;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+    min-width: 100px; /* Đảm bảo các nút có chiều rộng đồng nhất */
+    text-align: center;
+}
+
+.equip-btn:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.unequip-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-family: 'Press Start 2P', 'PixelFont', cursive;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+    min-width: 100px; /* Đảm bảo các nút có chiều rộng đồng nhất */
+    text-align: center;
+}
+
+.unequip-btn:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.sell-btn {
+    background-color: #FFA500; /* Màu cam cho nút bán - dễ phân biệt nhưng vẫn hài hòa */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    font-family: 'Press Start 2P', 'PixelFont', cursive;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s;
+    min-width: 100px; /* Đảm bảo các nút có chiều rộng đồng nhất */
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sell-btn:hover {
+    background-color: #FF8C00; /* Màu cam đậm hơn khi hover */
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.sell-btn .coin-icon {
+    margin-right: 5px;
+    font-size: 14px;
+}
+
+/* Character sprite animations */
+.direct-character-preview {
+    position: absolute;
+    width: 115.2px;   /* Reduced by 10% from 128px */
+    height: 115.2px;  /* Reduced by 10% from 128px */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.character-base-img, .character-equip-img {
+    position: absolute;
+    width: 256px;   /* Doubled from 128px */
+    height: 256px;  /* Doubled from 128px */
+    object-fit: contain;
+    image-rendering: pixelated;
+}
+
+.character-sprite-sheet {
+    width: 115.2px;  /* Reduced by 10% from 128px */
+    height: 115.2px; /* Reduced by 10% from 128px */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-repeat: no-repeat;
+    background-position: left top;
+    background-size: 400% 100%; /* 4 frames side by side */
+    image-rendering: pixelated;
+    background-position-x: -230.4px; /* Reduced by 10% from 256px */
+}
+
+/* Base character and equipment sprites với z-index được sắp xếp lại */
+.character-base-sprite {
+    background-image: url('../../img/Character/Character_base.png');
+    z-index: 2; /* Trên cánh nhưng dưới các trang bị khác */
+}
+
+.aprons-sprite {
+    background-image: url('../../img/Character/Aprons.png');
+    z-index: 5; /* Lớp trên cùng */
+}
+
+.boots-sprite {
+    background-image: url('../../img/Character/Boots.png');
+    z-index: 3;
+}
+
+.gloves-sprite {
+    background-image: url('../../img/Character/Gloves.png');
+    z-index: 4;
+}
+
+.hat-sprite {
+    background-image: url('../../img/Character/Hat.png');
+    z-index: 6; /* Mũ nên ở trên áo */
+}
+
+/* Tất cả các loại cánh đều có z-index thấp nhất */
+.wings-sprite {
+    background-image: url('../../img/Character/Wings.png');
+    z-index: 1;
+}
+
+.blackWings-sprite {
+    background-image: url('../../img/Character/BlackWings.png');
+    z-index: 1;
+}
+
+.whiteWings-sprite {
+    background-image: url('../../img/Character/WhiteWings.png');
+    z-index: 1;
+}
+
+/* Unified animation for all sprites */
+.character-animated {
+    animation: characterAnimation 1s infinite;
+}
+
+/* Đảm bảo tất cả các sprite đều có animation khi có class character-animated */
+.character-sprite-sheet.character-animated,
+.preview-character-base.character-animated,
+.preview-aprons.character-animated,
+.preview-boots.character-animated,
+.preview-gloves.character-animated,
+.preview-hat.character-animated,
+.preview-wings.character-animated,
+.preview-blackWings.character-animated,
+.preview-whiteWings.character-animated,
+.character-base-sprite.character-animated,
+.aprons-sprite.character-animated,
+.boots-sprite.character-animated,
+.gloves-sprite.character-animated,
+.hat-sprite.character-animated,
+.wings-sprite.character-animated,
+.blackWings-sprite.character-animated,
+.whiteWings-sprite.character-animated {
+    animation: characterAnimation 1s infinite;
+}
+
+@keyframes characterAnimation {
+    0%, 49.999% {
+        background-position-x: -230.4px;    /* Reduced by 10% from 256px */
+    }
+    50%, 100% {
+        background-position-x: -345.6px; /* Reduced by 10% from 384px */
+    }
+}
+
+/* Các định nghĩa icon từ thư mục icon/ */
+.aprons-icon {
+    background-image: url('../../img/icon/Aprons.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.boots-icon {
+    background-image: url('../../img/icon/Boots.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.gloves-icon {
+    background-image: url('../../img/icon/Gloves.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.hat-icon {
+    background-image: url('../../img/icon/Hat.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.wings-icon {
+    background-image: url('../../img/icon/Wings.png');
+    background-size: 85%;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.blackWings-icon {
+    background-image: url('../../img/icon/BlackWings.png');
+    background-size: 85%;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.whiteWings-icon {
+    background-image: url('../../img/icon/WhiteWings.png');
+    background-size: 85%;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+/* Thêm các icon trang bị mới */
+.armetHat_Gold-icon {
+    background-image: url('../../img/icon/ArmetHat_Gold.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.legionHat_Gold-icon {
+    background-image: url('../../img/icon/LegionHat_Gold.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.maximusHat_Gold-icon {
+    background-image: url('../../img/icon/MaximusHat_Gold.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.pirateHat_Blue-icon {
+    background-image: url('../../img/icon/PirateHat_Blue.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.gloves_Black-icon {
+    background-image: url('../../img/icon/Gloves_Black.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.sandals-icon {
+    background-image: url('../../img/icon/Sandals.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.legionArmor_Gold-icon {
+    background-image: url('../../img/icon/LegionArmor_Gold.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.maximusArmor_Gold-icon {
+    background-image: url('../../img/icon/MaximusArmor_Gold.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+.stretchyClothes_Black-icon {
+    background-image: url('../../img/icon/StretchyClothes_Black.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+}
+
+/* Đảm bảo tất cả các sprite đều có animation */
+/* Đã được thay thế bằng selector tổng hợp ở trên */
+
+.effect-slot {
+    background-color: rgba(70, 0, 120, 0.3);
+    border: 1px solid rgba(170, 0, 255, 0.3);
+}
+
+.effect-slot:hover {
+    border-color: rgba(170, 0, 255, 0.8);
+    background-color: rgba(70, 0, 120, 0.5);
+}
+
+/* Farm character styles */
+.farm-character-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 50;
+    overflow: visible;
+}
+
+.farm-character {
+    position: absolute;
+    width: 11.52%; /* Giảm 20% từ 14.4% (14.4 x 0.8 = 11.52%) */
+    height: 11.52%; /* Giảm 20% từ 14.4% (14.4 x 0.8 = 11.52%) */
+    top: 64%; /* Giữ nguyên vị trí theo chiều dọc */
+    left: 10%; /* Di chuyển qua trái 1 ô đất (24% - 8% = 16%) */
+    pointer-events: none;
+    transform-origin: center;
+}
+
+.farm-character-preview {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Thêm bóng đổ cho nhân vật */
+.farm-character-shadow {
+    position: absolute;
+    width: 80%;
+    height: 20%;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+    bottom: -5%;
+    left: 10%;
+    filter: blur(3px);
+    z-index: 1;
+    transform: rotateX(60deg);
+    pointer-events: none;
+}
+
+.farm-character-preview .character-sprite-sheet {
+    width: 128px; /* Giảm 20% từ 160px (160 x 0.8 = 128px) */
+    height: 128px; /* Giảm 20% từ 160px (160 x 0.8 = 128px) */
+    position: absolute;
+    background-size: 400% 100%; /* 4 frames side by side */
+    image-rendering: pixelated;
+    background-position-x: 0; /* Bắt đầu từ frame 1 */
+    z-index: 2; /* Đảm bảo nhân vật hiển thị trên bóng đổ */
+}
+
+/* Animation cho farm character (frames 1-2) */
+.farm-animated {
+    animation: farmCharacterAnimation 1s infinite;
+}
+
+@keyframes farmCharacterAnimation {
+    0%, 49.999% {
+        background-position-x: 0;      /* Frame 1 */
+    }
+    50%, 100% {
+        background-position-x: -128px;  /* Frame 2 - Điều chỉnh từ -160px xuống -128px để khớp với kích thước mới */
+    }
+}
+
+/* Các sprite cho mũ mới */
+.armetHat_Gold-sprite {
+    background-image: url('../../img/Character/ArmetHat_Gold.png');
+    z-index: 6; /* Giống như hat-sprite */
+}
+
+.legionHat_Gold-sprite {
+    background-image: url('../../img/Character/LegionHat_Gold.png');
+    z-index: 6;
+}
+
+.maximusHat_Gold-sprite {
+    background-image: url('../../img/Character/MaximusHat_Gold.png');
+    z-index: 6;
+}
+
+.pirateHat_Blue-sprite {
+    background-image: url('../../img/Character/PirateHat_Blue.png');
+    z-index: 6;
+}
+
+/* Sprite cho găng tay mới */
+.gloves_Black-sprite {
+    background-image: url('../../img/Character/Gloves_Black.png');
+    z-index: 4; /* Giống như gloves-sprite */
+}
+
+/* Sprite cho giày mới */
+.sandals-sprite {
+    background-image: url('../../img/Character/Sandals.png');
+    z-index: 3; /* Giống như boots-sprite */
+}
+
+/* Sprite cho tạp dề/quần áo mới */
+.legionArmor_Gold-sprite {
+    background-image: url('../../img/Character/LegionArmor_Gold.png');
+    z-index: 5; /* Giống như aprons-sprite */
+}
+
+.maximusArmor_Gold-sprite {
+    background-image: url('../../img/Character/MaximusArmor_Gold.png');
+    z-index: 5;
+}
+
+.stretchyClothes_Black-sprite {
+    background-image: url('../../img/Character/StretchyClothes_Black.png');
+    z-index: 5;
+}
+
+/* Thêm các sprite mới vào animation */
+.armetHat_Gold-sprite.character-animated,
+.legionHat_Gold-sprite.character-animated,
+.maximusHat_Gold-sprite.character-animated,
+.pirateHat_Blue-sprite.character-animated,
+.gloves_Black-sprite.character-animated,
+.sandals-sprite.character-animated,
+.legionArmor_Gold-sprite.character-animated,
+.maximusArmor_Gold-sprite.character-animated,
+.stretchyClothes_Black-sprite.character-animated {
+    animation: characterAnimation 1s infinite;
+}
+
+/* Điều chỉnh lại z-index của các trang bị farm */
+.farm-character-preview .character-base-sprite {
+    z-index: 10; /* Base character layer */
+}
+
+.farm-character-preview .wings-sprite,
+.farm-character-preview .blackWings-sprite,
+.farm-character-preview .whiteWings-sprite {
+    z-index: 5; /* Cánh hiển thị phía sau nhân vật */
+}
+
+.farm-character-preview .aprons-sprite,
+.farm-character-preview .legionArmor_Gold-sprite,
+.farm-character-preview .maximusArmor_Gold-sprite,
+.farm-character-preview .stretchyClothes_Black-sprite {
+    z-index: 15; /* Quần áo hiển thị trên nhân vật */
+}
+
+.farm-character-preview .boots-sprite,
+.farm-character-preview .sandals-sprite {
+    z-index: 12; /* Giày hiển thị trên nhân vật nhưng dưới quần áo */
+}
+
+.farm-character-preview .gloves-sprite,
+.farm-character-preview .gloves_Black-sprite {
+    z-index: 16; /* Găng tay hiển thị trên quần áo */
+}
+
+.farm-character-preview .hat-sprite,
+.farm-character-preview .armetHat_Gold-sprite,
+.farm-character-preview .legionHat_Gold-sprite,
+.farm-character-preview .maximusHat_Gold-sprite,
+.farm-character-preview .pirateHat_Blue-sprite {
+    z-index: 20; /* Mũ hiển thị trên cùng */
+}

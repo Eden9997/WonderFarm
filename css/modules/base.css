@@ -1,0 +1,348 @@
+/* Base styles and resets */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: 'PixelFont';
+    src: url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    font-display: swap;
+}
+
+/* Base styles and global font settings */
+body, html {
+    font-family: 'VT323', 'Press Start 2P', 'PixelFont', monospace;
+    font-size: 16px;
+    color: #ffffff;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100%;
+    background-color: #000;
+    image-rendering: pixelated;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    height: 100vh;
+    overflow: hidden;
+    touch-action: manipulation;
+}
+
+.game-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000; /* Nền đen cho phần dư thừa */
+}
+
+.game-background {
+    position: relative;
+    background-image: url('../../img/background.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 100vw; /* Sử dụng toàn bộ chiều rộng viewport */
+    height: 100vh; /* Sử dụng toàn bộ chiều cao viewport */
+    max-width: calc(100vh * 9 / 16); /* Giới hạn chiều rộng theo tỷ lệ 9:16 */
+    max-height: calc(100vw * 16 / 9); /* Giới hạn chiều cao theo tỷ lệ 9:16 */
+    aspect-ratio: 9 / 16; /* Tỷ lệ khung hình cố định 9:16 */
+}
+
+.loading-indicator {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 30px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 10px;
+    z-index: 2000;
+    font-weight: bold;
+    text-align: center;
+}
+
+.game-message {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    text-align: center;
+    max-width: 80%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-family: 'Press Start 2P', 'Arial', sans-serif;
+    image-rendering: pixelated;
+    pointer-events: none;
+}
+
+.game-message.show {
+    opacity: 0.9;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Game header with currency display */
+.game-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 10px;
+    background-color: transparent;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    max-width: inherit;
+}
+
+.currency-display {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #FFD700;
+    padding: 5px 10px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    font-family: 'Press Start 2P', 'PixelFont', cursive;
+    font-size: 16px;
+    border: 2px solid #FFD700;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    image-rendering: pixelated;
+}
+
+.coin-icon {
+    margin-right: 5px;
+    font-size: 18px;
+}
+
+#player-money {
+    color: white;
+    text-shadow: 1px 1px 1px #000;
+}
+
+/* Header buttons */
+.header-buttons {
+    display: flex;
+    margin-left: auto;
+}
+
+.header-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 16px;
+    margin-left: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#show-quests {
+    border: 2px solid #4CAF50;
+    color: #8eff8e;
+}
+
+#show-quests:hover {
+    transform: scale(1.1);
+    background-color: rgba(30, 75, 30, 0.7);
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.8);
+}
+
+#show-leaderboard {
+    border: 2px solid #2196F3;
+    color: #66cfff;
+}
+
+#show-leaderboard:hover {
+    transform: scale(1.1);
+    background-color: rgba(30, 60, 90, 0.7);
+    box-shadow: 0 0 10px rgba(33, 150, 243, 0.8);
+}
+
+#show-achievements {
+    border: 2px solid #ffd700;
+    color: #ffd700;
+}
+
+#show-achievements:hover {
+    transform: scale(1.1);
+    background-color: rgba(50, 50, 0, 0.7);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}
+
+/* Tutorial system */
+.tutorial-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 3000;
+    pointer-events: all;
+}
+
+.tutorial-box {
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: 3px solid #ffd700;
+    border-radius: 10px;
+    padding: 20px;
+    color: white;
+    z-index: 3001;
+    max-width: 300px;
+    font-family: 'Press Start 2P', 'PixelFont', cursive;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.tutorial-title {
+    font-size: 14px;
+    color: #ffd700;
+    margin-bottom: 10px;
+    text-align: center;
+    text-shadow: 1px 1px 2px black;
+}
+
+.tutorial-content {
+    font-size: 12px;
+    line-height: 1.4;
+    margin-bottom: 15px;
+}
+
+.tutorial-next {
+    background-color: #ffd700;
+    color: #000;
+    border: none;
+    padding: 8px 15px;
+    font-family: 'Press Start 2P', 'PixelFont', cursive;
+    font-size: 12px;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto;
+    border-radius: 5px;
+    transition: all 0.2s;
+}
+
+.tutorial-next:hover {
+    transform: scale(1.05);
+    background-color: #ffec80;
+}
+
+.tutorial-highlight {
+    position: relative;
+    z-index: 3002;
+    animation: highlight-pulse 1.5s infinite alternate;
+    box-shadow: 0 0 0 3px #ffd700;
+}
+
+@keyframes highlight-pulse {
+    0% {
+        box-shadow: 0 0 0 3px #ffd700;
+    }
+    100% {
+        box-shadow: 0 0 0 6px #ffd700;
+    }
+}
+
+/* Ensure consistent button styling across the game */
+button {
+    font-family: 'VT323', 'Press Start 2P', 'PixelFont', monospace;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+/* Common headings styling */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'VT323', 'Press Start 2P', 'PixelFont', monospace;
+    margin: 0;
+    padding: 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Common popup styling */
+.game-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 3000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    font-family: 'VT323', 'Press Start 2P', 'PixelFont', monospace;
+}
+
+.game-popup.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-content {
+    border-radius: 10px;
+    border: 3px solid;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid;
+}
+
+.popup-close {
+    background: #ec6a5e;
+    border: 2px solid #fff;
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-shadow: 1px 1px 0 #333;
+}
+
+.popup-close:hover {
+    transform: scale(1.1);
+}

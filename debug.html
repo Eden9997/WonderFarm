@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wonder Farm - Debug Mode</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Debug page styles */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            min-height: 100vh;
+        }
+        
+        .debug-container {
+            display: flex;
+            width: 100%;
+            height: 100vh;
+        }
+        
+        /* Debug panel styles */
+        .debug-panel {
+            width: 300px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+        
+        .debug-panel h2 {
+            margin-top: 0;
+            border-bottom: 1px solid #ecf0f1;
+            padding-bottom: 10px;
+            color: #f1c40f;
+        }
+        
+        .debug-section {
+            margin-bottom: 20px;
+        }
+        
+        .debug-button {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+        
+        .debug-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .debug-button.danger {
+            background-color: #e74c3c;
+        }
+        
+        .debug-button.danger:hover {
+            background-color: #c0392b;
+        }
+        
+        .debug-button.success {
+            background-color: #2ecc71;
+        }
+        
+        .debug-button.success:hover {
+            background-color: #27ae60;
+        }
+        
+        .debug-input {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .debug-input input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .debug-input button {
+            padding: 8px 12px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        .debug-checkbox {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .debug-checkbox input {
+            margin-right: 10px;
+        }
+        
+        .debug-range {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .debug-range-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .debug-log {
+            background-color: #34495e;
+            color: #2ecc71;
+            font-family: monospace;
+            padding: 10px;
+            border-radius: 4px;
+            height: 150px;
+            overflow-y: auto;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+        
+        .debug-log-entry {
+            margin-bottom: 5px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #2c3e50;
+        }
+        
+        .debug-log-entry.error {
+            color: #e74c3c;
+        }
+        
+        /* Telegram simulator styles */
+        .telegram-simulator {
+            flex-grow: 1;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .phone-frame {
+            width: 375px;
+            height: 667px;
+            background-color: #111;
+            border-radius: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border: 8px solid #222;
+        }
+        
+        .phone-header {
+            height: 40px;
+            background-color: #0088cc;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .phone-header .back-button {
+            margin-right: 15px;
+            font-size: 20px;
+        }
+        
+        .phone-content {
+            height: calc(100% - 40px);
+            overflow: hidden;
+            position: relative;
+            background-color: #f9f9f9;
+        }
+        
+        .overlay-hidden {
+            display: none;
+        }
+        
+        .overlay-visible {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255,255,255,0.7);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        /* Make sure the game fits in the phone frame */
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Debug visualization */
+        .hidden-plot-visible {
+            border: 2px dashed #e74c3c !important;
+            position: relative;
+        }
+        
+        .hidden-plot-visible::after {
+            content: "🔓";
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 12px;
+            background-color: rgba(231, 76, 60, 0.7);
+            color: white;
+            padding: 2px;
+        }
+        
+        .growth-time-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #3498db;
+            transform-origin: left;
+        }
+        
+        /* Status display */
+        .debug-status {
+            background-color: #34495e;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #2c3e50;
+        }
+        
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status-label {
+            color: #bdc3c7;
+        }
+        
+        .status-value {
+            font-weight: bold;
+            color: #ecf0f1;
+        }
+        
+        /* Loading animation */
+        .loading-dots:after {
+            content: '.';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60% { content: '...'; }
+            80%, 100% { content: ''; }
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-container">
+        <!-- Debug Panel (Left Side) -->
+        <div class="debug-panel">
+            <h2>Wonder Farm Debug Tools</h2>
+            
+            <!-- Current Game Status -->
+            <div class="debug-section">
+                <h3>Game Status</h3>
+                <div class="debug-status">
+                    <div class="status-item">
+                        <span class="status-label">Money:</span>
+                        <span class="status-value" id="debug-money">Loading...</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Plants:</span>
+                        <span class="status-value" id="debug-plants">Loading...</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="status-label">Unlocked Plots:</span>
+                        <span class="status-value" id="debug-plots">Loading...</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Money Tools -->
+            <div class="debug-section">
+                <h3>Money Tools</h3>
+                <div class="debug-input">
+                    <input type="number" id="money-amount" placeholder="Amount">
+                    <button id="add-money">Add</button>
+                </div>
+                <button class="debug-button" id="money-1000">+ 1,000 Coins</button>
+                <button class="debug-button" id="money-10000">+ 10,000 Coins</button>
+                <button class="debug-button danger" id="reset-money">Reset Money</button>
+            </div>
+            
+            <!-- Growth Time Tools -->
+            <div class="debug-section">
+                <h3>Growth Time Tools</h3>
+                <div class="debug-range-label">
+                    <span>Growth Speed Multiplier:</span>
+                    <span id="growth-speed-value">1x</span>
+                </div>
+                <input type="range" id="growth-speed" class="debug-range" min="1" max="100" value="1">
+                <button class="debug-button" id="instant-growth">Instant Growth (All)</button>
+                <button class="debug-button" id="harvest-all">Harvest All Ready</button>
+            </div>
+            
+            <!-- Plot Tools -->
+            <div class="debug-section">
+                <h3>Plot Tools</h3>
+                <button class="debug-button" id="show-hidden-plots">Show All Hidden Plots</button>
+                <button class="debug-button" id="hide-hidden-plots">Hide Hidden Plots</button>
+                <button class="debug-button" id="unlock-all-plots">Unlock All Plots</button>
+            </div>
+            
+            <!-- Plant Tools -->
+            <div class="debug-section">
+                <h3>Plant Tools</h3>
+                <button class="debug-button" id="add-random-plants">Add Random Plants</button>
+                <button class="debug-button danger" id="clear-all-plants">Clear All Plants</button>
+            </div>
+            
+            <!-- Visual Debug -->
+            <div class="debug-section">
+                <h3>Visual Debug</h3>
+                <div class="debug-checkbox">
+                    <input type="checkbox" id="show-growth-time">
+                    <label for="show-growth-time">Show Growth Timers</label>
+                </div>
+                <div class="debug-checkbox">
+                    <input type="checkbox" id="show-grid-index">
+                    <label for="show-grid-index">Show Grid Indices</label>
+                </div>
+            </div>
+            
+            <!-- Debug Log -->
+            <div class="debug-section">
+                <h3>Debug Log</h3>
+                <div class="debug-log" id="debug-log"></div>
+                <button class="debug-button" id="clear-log">Clear Log</button>
+            </div>
+        </div>
+        
+        <!-- Telegram Simulator (Right Side) -->
+        <div class="telegram-simulator">
+            <div class="phone-frame">
+                <div class="phone-header">
+                    <span class="back-button">←</span>
+                    <span>Wonder Farm</span>
+                </div>
+                <div class="phone-content" id="phone-content">
+                    <!-- Add sandbox attributes to prevent cross-origin issues -->
+                    <iframe id="game-iframe" src="index.html" sandbox="allow-same-origin allow-scripts allow-forms" allow="cross-origin-isolated"></iframe>
+                </div>
+                <div class="overlay-visible" id="loading-overlay">
+                    <img src="img/plant/Watermelon.png" alt="Loading" style="width: 48px; height: 48px; margin-bottom: 15px;">
+                    <p>Loading Wonder Farm <span class="loading-dots"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Debug Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const gameIframe = document.getElementById('game-iframe');
+            const loadingOverlay = document.getElementById('loading-overlay');
+            let isGameReady = false;
+            
+            // Debug Logger with clear error messages
+            function logDebug(message, isError = false) {
+                const debugLog = document.getElementById('debug-log');
+                const entry = document.createElement('div');
+                entry.className = isError ? 'debug-log-entry error' : 'debug-log-entry';
+                
+                // Add timestamp
+                const now = new Date();
+                const timestamp = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+                
+                entry.textContent = `[${timestamp}] ${message}`;
+                debugLog.appendChild(entry);
+                debugLog.scrollTop = debugLog.scrollHeight;
+                
+                // Log to console for easier debugging
+                if (isError) {
+                    console.error(`[DEBUG ERROR] ${message}`);
+                } else {
+                    console.log(`[DEBUG] ${message}`);
+                }
+            }
+            
+            // Function to send commands to the game iframe
+            function sendGameCommand(action, data = {}) {
+                if (!isGameReady) {
+                    logDebug("Game not ready yet, command not sent: " + action, true);
+                    return;
+                }
+                
+                try {
+                    // Using * as targetOrigin to allow communication when loading from local file system
+                    gameIframe.contentWindow.postMessage({
+                        type: 'debug_command',
+                        action: action,
+                        data: data
+                    }, '*');
+                    logDebug(`Command sent: ${action}`);
+                } catch (error) {
+                    logDebug(`Error sending command ${action}: ${error.message}`, true);
+                    console.error('Full error:', error);
+                }
+            }
+            
+            // Wait for iframe to load
+            gameIframe.onload = function() {
+                logDebug('Game iframe loaded, initializing communication...');
+                
+                // Retry mechanism for initialization
+                let retryCount = 0;
+                const maxRetries = 5;
+                const retryInterval = 1000; // ms
+                
+                function attemptInitialization() {
+                    try {
+                        // Using * as targetOrigin to allow communication when loading from local file system
+                        gameIframe.contentWindow.postMessage({
+                            type: 'debug_command',
+                            action: 'get_state'
+                        }, '*');
+                        logDebug(`Sent state request (attempt ${retryCount + 1}/${maxRetries})`);
+                        
+                        retryCount++;
+                        if (retryCount < maxRetries && !isGameReady) {
+                            setTimeout(attemptInitialization, retryInterval);
+                        }
+                    } catch (error) {
+                        logDebug(`Error sending initial state request: ${error.message}`, true);
+                        console.error('Full error:', error);
+                        
+                        if (retryCount < maxRetries) {
+                            retryCount++;
+                            logDebug(`Retrying in ${retryInterval/1000}s (attempt ${retryCount}/${maxRetries})...`);
+                            setTimeout(attemptInitialization, retryInterval);
+                        } else {
+                            showConnectionError("Maximum retry attempts reached");
+                        }
+                    }
+                }
+                
+                // Start initialization process after a small delay
+                setTimeout(attemptInitialization, 500);
+                
+                // Set up timeout in case game doesn't respond
+                const initTimeout = setTimeout(() => {
+                    if (!isGameReady) {
+                        showConnectionError("No response from game");
+                    }
+                }, 15000);
+                
+                function showConnectionError(reason) {
+                    loadingOverlay.innerHTML = `
+                        <img src="img/plant/Watermelon.png" alt="Error" style="width: 48px; height: 48px; margin-bottom: 15px; filter: grayscale(100%);">
+                        <p>Game loading failed</p>
+                        <p style="color: #e74c3c;">${reason}. Please try the following:</p>
+                        <ol style="text-align: left; margin-top: 10px; color: #e74c3c;">
+                            <li>Use a local web server instead of opening files directly</li>
+                            <li>Add <code>document.domain = document.domain</code> to both files</li>
+                            <li>Ensure game.js has the message handler implemented</li>
+                            <li>Check console for specific errors</li>
+                        </ol>
+                        <button onclick="location.reload()" style="margin-top: 15px; padding: 8px 16px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">Reload Page</button>
+                    `;
+                    logDebug(`Game initialization failed: ${reason}`, true);
+                }
+                
+                // Listen for game state updates
+                window.addEventListener('message', function(event) {
+                    // Process messages from any source (to handle cross-origin issues)
+                    try {
+                        // Process game responses
+                        if (event.data && event.data.type === 'debug_response') {
+                            // Mark game as ready on first response
+                            if (!isGameReady) {
+                                isGameReady = true;
+                                clearTimeout(initTimeout);
+                                loadingOverlay.className = 'overlay-hidden';
+                                logDebug('Game communication established successfully');
+                            }
+                            
+                            // Process specific response types
+                            handleGameResponse(event.data);
+                        }
+                    } catch (error) {
+                        logDebug(`Error processing message from game: ${error.message}`, true);
+                        console.error('Full error:', error);
+                    }
+                });
+            };
+            
+            // Setup game state and data
+            let gameState = null;
+            let gameConfig = null;
+            
+            // Function to handle game responses
+            function handleGameResponse(response) {
+                const { action, data } = response;
+                
+                switch (action) {
+                    case 'state_update':
+                        // Update our local copies of game data
+                        if (data && data.gameState) {
+                            gameState = data.gameState;
+                        }
+                        if (data && data.config) {
+                            gameConfig = data.config;
+                        }
+                        
+                        // Update UI with the new data
+                        updateDebugUI(data);
+                        break;
+                        
+                    case 'money_updated':
+                        if (data && data.money !== undefined) {
+                            document.getElementById('debug-money').textContent = data.money;
+                            if (gameState) gameState.money = data.money;
+                        }
+                        break;
+                        
+                    case 'error':
+                        logDebug(`Game error on command ${data.command}: ${data.message}`, true);
+                        break;
+                        
+                    default:
+                        logDebug(`Received response for action: ${action}`);
+                        break;
+                }
+            }
+            
+            // Update the debug UI with current game state
+            function updateDebugUI(data) {
+                if (gameState) {
+                    document.getElementById('debug-money').textContent = gameState.money;
+                    document.getElementById('debug-plants').textContent = gameState.plants.length;
+                }
+                
+                // Update plots info if available
+                if (data && data.plotInfo) {
+                    document.getElementById('debug-plots').textContent = 
+                        `${data.plotInfo.unlocked}/${data.plotInfo.total}`;
+                }
+            }
+            
+            // Function to request a fresh game state update
+            function refreshGameState() {
+                if (isGameReady) {
+                    sendGameCommand('get_state');
+                }
+            }
+            
+            // Set up polling for regular state updates
+            const statusInterval = setInterval(refreshGameState, 3000);
+            
+            // Money Debug Tools
+            document.getElementById('add-money').addEventListener('click', function() {
+                const amount = parseInt(document.getElementById('money-amount').value) || 0;
+                if (amount > 0) {
+                    sendGameCommand('add_money', { amount: amount });
+                }
+            });
+            
+            document.getElementById('money-1000').addEventListener('click', function() {
+                sendGameCommand('add_money', { amount: 1000 });
+            });
+            
+            document.getElementById('money-10000').addEventListener('click', function() {
+                sendGameCommand('add_money', { amount: 10000 });
+            });
+            
+            document.getElementById('reset-money').addEventListener('click', function() {
+                sendGameCommand('set_money', { amount: 100 });
+            });
+            
+            // Growth Speed Debug Tools
+            const growthSpeedSlider = document.getElementById('growth-speed');
+            const growthSpeedValue = document.getElementById('growth-speed-value');
+            
+            growthSpeedSlider.addEventListener('input', function() {
+                const multiplier = parseInt(this.value);
+                growthSpeedValue.textContent = `${multiplier}x`;
+                sendGameCommand('set_growth_speed', { multiplier: multiplier });
+            });
+            
+            document.getElementById('instant-growth').addEventListener('click', function() {
+                sendGameCommand('instant_growth');
+            });
+            
+            document.getElementById('harvest-all').addEventListener('click', function() {
+                sendGameCommand('harvest_all');
+            });
+            
+            // Plot Debug Tools
+            document.getElementById('show-hidden-plots').addEventListener('click', function() {
+                sendGameCommand('show_hidden_plots');
+            });
+            
+            document.getElementById('hide-hidden-plots').addEventListener('click', function() {
+                sendGameCommand('hide_hidden_plots');
+            });
+            
+            document.getElementById('unlock-all-plots').addEventListener('click', function() {
+                sendGameCommand('unlock_all_plots');
+            });
+            
+            // Plant Debug Tools
+            document.getElementById('add-random-plants').addEventListener('click', function() {
+                sendGameCommand('add_random_plants');
+            });
+            
+            document.getElementById('clear-all-plants').addEventListener('click', function() {
+                sendGameCommand('clear_all_plants');
+            });
+            
+            // Visual Debug Tools
+            document.getElementById('show-growth-time').addEventListener('change', function() {
+                sendGameCommand('toggle_growth_timers', { visible: this.checked });
+            });
+            
+            document.getElementById('show-grid-index').addEventListener('change', function() {
+                sendGameCommand('toggle_grid_indices', { visible: this.checked });
+            });
+            
+            // Clear log button
+            document.getElementById('clear-log').addEventListener('click', function() {
+                document.getElementById('debug-log').innerHTML = '';
+                logDebug('Debug log cleared');
+            });
+        });
+    </script>
+</body>
+</html>

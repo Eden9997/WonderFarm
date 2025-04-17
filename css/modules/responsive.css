@@ -1,0 +1,311 @@
+/* Responsive styles for different devices */
+@media (max-width: 768px) {
+    .character-content {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .character-preview {
+        width: 160px;
+        height: 160px;
+    }
+    
+    .equipment-slot {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .equipment-image {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .detail-content {
+        width: 90%;
+        padding: 15px;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 480px) {
+    /* Plant menu adjustments */
+    .plant-options {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .plant-item img {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .currency-display {
+        font-size: 14px;
+        padding: 4px 8px;
+    }
+    
+    .price-label {
+        font-size: 10px;
+        padding: 2px 4px;
+    }
+    
+    /* Character panel adjustments */
+    .character-content {
+        padding: 12px;
+    }
+    
+    .character-preview {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .equipment-slot {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .equipment-image {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .inventory-items {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .character-header h2, 
+    .achievements-header h2, 
+    .quests-header h2, 
+    .leaderboard-header h2 {
+        font-size: 14px;
+    }
+    
+    /* Sidebar panel adjustments */
+    .achievements-panel,
+    .quests-panel,
+    .leaderboard-panel {
+        width: 280px;
+        max-width: 90%;
+    }
+    
+    /* Notification adjustments */
+    .achievement-notification,
+    .quest-notification {
+        max-width: 250px;
+        padding: 12px;
+    }
+    
+    .achievement-icon,
+    .quest-icon {
+        font-size: 28px;
+        margin-right: 12px;
+    }
+    
+    .achievement-title,
+    .quest-title {
+        font-size: 12px;
+    }
+    
+    .achievement-description,
+    .quest-description {
+        font-size: 10px;
+    }
+}
+
+/* Tiny mobile devices */
+@media (max-width: 360px) {
+    .plant-options {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .inventory-items {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .equipment-slot {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .equipment-image {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .character-preview {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .achievements-panel,
+    .quests-panel,
+    .leaderboard-panel {
+        width: 260px;
+    }
+}
+
+/* Landscape mode for mobile */
+@media (max-height: 480px) and (orientation: landscape) {
+    .plant-menu {
+        max-height: 80vh;
+    }
+    
+    .character-content,
+    .detail-content {
+        max-height: 90vh;
+    }
+    
+    .character-preview {
+        width: 120px;
+        height: 120px;
+        margin-bottom: 10px;
+    }
+    
+    .character-stats {
+        margin-bottom: 10px;
+        padding: 10px;
+    }
+    
+    .equipment-section {
+        margin-bottom: 10px;
+        gap: 5px;
+    }
+    
+    .equipment-slot {
+        width: 42px;
+        height: 42px;
+    }
+    
+    .equipment-image {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* High density displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .character-base-img, 
+    .character-equip-img,
+    .equipment-image,
+    .plant-item img {
+        image-rendering: auto;
+    }
+}
+
+/* Telegram Mini App Optimizations */
+
+/* Đảm bảo game lấp đầy toàn bộ không gian khả dụng */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--tg-theme-bg-color, #ffffff);
+}
+
+/* Tối ưu cho Telegram Mini App */
+html.telegram-app {
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Game container full height và adaptive */
+.game-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Header styles để tích hợp với giao diện Telegram */
+.game-header {
+    background: var(--tg-theme-secondary-bg-color, rgba(0,0,0,0.05));
+    padding: 8px;
+    border-bottom: none;
+    /* Tạo gradient mờ để liền mạch với header của Telegram */
+    background: linear-gradient(
+        to bottom,
+        var(--tg-theme-secondary-bg-color, rgba(0,0,0,0.05)) 0%,
+        var(--tg-theme-secondary-bg-color, rgba(0,0,0,0.05)) 70%,
+        transparent 100%
+    );
+    z-index: 10;
+}
+
+/* Cho browser mode thêm padding top để bù header */
+body.browser-mode .game-container {
+    padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Style cho các button phù hợp với Telegram */
+button, .button {
+    background-color: var(--tg-theme-button-color, #50a8eb);
+    color: var(--tg-theme-button-text-color, #ffffff);
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+}
+
+/* Tối ưu hiển thị modal */
+.achievements-panel,
+.quests-panel,
+.leaderboard-panel,
+.character-panel,
+.shop-panel,
+.plant-menu,
+.equipment-detail {
+    z-index: 1000;
+}
+
+/* Safe area insets cho thiết bị notch */
+@supports (padding-top: env(safe-area-inset-top)) {
+    body {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+}
+
+/* Responsive cho các kích thước màn hình nhỏ */
+@media (max-height: 700px) {
+    .game-header {
+        padding: 4px;
+    }
+    
+    .currency-display {
+        font-size: 0.9em;
+    }
+    
+    .header-buttons .header-button {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+        margin-left: 8px;
+    }
+}
+
+/* Trạng thái theme dark/light */
+[data-theme="dark"] {
+    --main-bg-color: #222;
+    --main-text-color: #fff;
+    --panel-bg-color: #333;
+    --panel-text-color: #eee;
+    --button-bg: #555;
+    --button-text: #fff;
+}
+
+[data-theme="light"] {
+    --main-bg-color: #f5f5f5;
+    --main-text-color: #333;
+    --panel-bg-color: #fff;
+    --panel-text-color: #333;
+    --button-bg: #50a8eb;
+    --button-text: #fff;
+}

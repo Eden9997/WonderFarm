@@ -1,0 +1,288 @@
+/* Achievement system styles */
+.achievement-notification {
+    position: absolute;
+    top: 50px;
+    right: 20px;
+    max-width: 280px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 3px solid #ffd700;
+    border-radius: 10px;
+    padding: 15px;
+    color: white;
+    display: flex;
+    align-items: center;
+    z-index: 2000;
+    transform: translateX(120%);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    font-family: 'VT323', 'Press Start 2P', 'PixelFont', monospace;
+    image-rendering: pixelated;
+}
+
+.achievement-notification.show {
+    transform: translateX(0);
+}
+
+.achievement-icon {
+    font-size: 32px;
+    margin-right: 15px;
+    animation: achievement-bounce 0.8s infinite alternate;
+}
+
+@keyframes achievement-bounce {
+    0% {
+        transform: scale(1) rotate(-5deg);
+    }
+    100% {
+        transform: scale(1.2) rotate(5deg);
+    }
+}
+
+.achievement-content {
+    flex: 1;
+}
+
+.achievement-title {
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffd700;
+    margin-bottom: 5px;
+    text-shadow: 1px 1px 2px black;
+}
+
+.achievement-description {
+    font-size: 12px;
+    margin-bottom: 10px;
+    opacity: 0.9;
+}
+
+.achievement-reward {
+    font-size: 14px;
+    color: #00ff00;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+    display: inline-block;
+    padding: 3px 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Achievement panel */
+.achievements-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 3000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    font-family: 'VT323', 'Press Start 2P', 'PixelFont', monospace;
+}
+
+.achievements-panel.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.achievements-content {
+    background-color: rgba(50, 50, 0, 0.95);
+    border-radius: 10px;
+    border: 3px solid #ffd700;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.achievements-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+}
+
+.achievements-header h2 {
+    color: #ffd700;
+    font-size: 22px;
+    margin: 0;
+    text-shadow: 1px 1px 2px black;
+}
+
+.close-achievements {
+    background: #ec6a5e;
+    border: 2px solid #fff;
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-shadow: 1px 1px 0 #333;
+}
+
+.close-achievements:hover {
+    transform: scale(1.1);
+}
+
+.achievements-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 5px;
+}
+
+.achievement-item {
+    background-color: rgba(50, 50, 0, 0.3);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    padding: 15px;
+    transition: all 0.2s;
+}
+
+.achievement-item:hover {
+    background-color: rgba(50, 50, 0, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.achievement-item.unlocked {
+    background-color: rgba(50, 50, 0, 0.6);
+    border-color: #ffd700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.achievement-item.unlocked .achievement-item-title {
+    color: #ffd700;
+}
+
+.achievement-item-title {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: #ccc;
+}
+
+.achievement-item-description {
+    font-size: 14px;
+    color: #ddd;
+    margin-bottom: 8px;
+}
+
+.achievement-item-reward {
+    font-size: 14px;
+    color: #00ff00;
+    margin-bottom: 5px;
+}
+
+.achievement-progress {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #aaa;
+}
+
+.progress-value {
+    color: #ffd700;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.1);
+    margin-top: 5px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #ffd700;
+    border-radius: 4px;
+    transition: width 0.3s;
+}
+
+/* Combo effect styles */
+.combo-effect {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    color: #ff9900;
+    font-family: 'VT323', 'Press Start 2P', 'PixelFont', monospace;
+    font-size: 28px;
+    text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+    z-index: 2000;
+    opacity: 0;
+    transition: all 0.3s ease-out;
+    pointer-events: none;
+    text-align: center;
+    filter: drop-shadow(0 0 10px rgba(255, 153, 0, 0.8));
+}
+
+.combo-effect.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    animation: combo-pulse 0.8s infinite alternate;
+}
+
+.combo-effect.combo-high {
+    color: #ff3300;
+    font-size: 32px;
+    filter: drop-shadow(0 0 15px rgba(255, 80, 0, 0.8));
+}
+
+.combo-effect.combo-max {
+    color: #ff00ff;
+    font-size: 36px;
+    filter: drop-shadow(0 0 20px rgba(255, 0, 255, 0.8));
+}
+
+@keyframes combo-pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        filter: brightness(1);
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1.1);
+        filter: brightness(1.5);
+    }
+}
+
+/* Achievement button */
+.achievement-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 2px solid #ffd700;
+    color: #ffd700;
+    font-size: 16px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.achievement-button:hover {
+    transform: scale(1.1);
+    background-color: rgba(50, 50, 0, 0.7);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}

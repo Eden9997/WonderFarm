@@ -1,0 +1,518 @@
+/* Animation and visual effects styles */
+.points-effect {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #FFD700;
+    font-weight: bold;
+    font-size: 20px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.7), -1px -1px 0 rgba(0,0,0,0.7), 1px -1px 0 rgba(0,0,0,0.7), -1px 1px 0 rgba(0,0,0,0.7);
+    animation: float-up 1.2s forwards;
+    z-index: 10;
+    pointer-events: none;
+    font-family: 'Press Start 2P', 'PixelFont', cursive;
+}
+
+.points-effect::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 15px;
+    background: linear-gradient(to top, rgba(255, 215, 0, 0.4), transparent);
+    transform: translate(-50%, 0) scale(1, 0.5);
+    z-index: -1;
+    border-radius: 50%;
+    filter: blur(3px);
+    animation: trail-fade 1.2s forwards;
+}
+
+@keyframes trail-fade {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 0) scale(1, 0.5);
+    }
+    20% {
+        opacity: 1;
+        transform: translate(-50%, 10px) scale(1.2, 0.6);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, 50px) scale(0.8, 0.3);
+    }
+}
+
+@keyframes float-up {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -30%);
+        font-size: 16px;
+        text-shadow: 0 0 5px rgba(255, 215, 0, 0.7);
+    }
+    10% {
+        opacity: 1;
+        font-size: 20px;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.9), 2px 2px 0 rgba(0,0,0,0.7);
+    }
+    80% {
+        opacity: 1;
+        text-shadow: 0 0 8px rgba(255, 215, 0, 0.5), 2px 2px 0 rgba(0,0,0,0.7);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -150%);
+        font-size: 24px;
+        text-shadow: 0 0 0 rgba(255, 215, 0, 0), 2px 2px 0 rgba(0,0,0,0.7);
+    }
+}
+
+.planting-rays {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 5;
+    animation: rays 1s ease-out;
+    pointer-events: none;
+}
+
+@keyframes rays {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 100, 0.7) inset;
+        transform: scale(0.5);
+    }
+    50% {
+        box-shadow: 0 0 30px 10px rgba(255, 255, 100, 0.3) inset;
+        transform: scale(1.1);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 255, 100, 0) inset;
+        transform: scale(1);
+    }
+}
+
+/* Harvest Effect Styling */
+.harvest-effect-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.harvest-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 4;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.harvest-flash {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffd700; /* Màu mặc định sẽ bị ghi đè bởi style inline */
+    opacity: 0;
+    animation: pixel-flash 0.5s ease-out forwards;
+    z-index: 5;
+    pointer-events: none;
+    border-radius: 40%;
+    mix-blend-mode: lighten; /* Thay đổi từ screen sang lighten để trong suốt hơn */
+}
+
+@keyframes pixel-flash {
+    0% { opacity: 0; transform: scale(0.8); }
+    20% { opacity: 0.6; transform: scale(1.1); } /* Giảm opacity xuống 0.6 từ 0.9 */
+    70% { opacity: 0.4; transform: scale(1.2); } /* Giảm opacity xuống 0.4 từ 0.7 */
+    100% { opacity: 0; transform: scale(1.3); }
+}
+
+.coin-particle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: gold;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.8);
+    animation: coin-fly-up 1s ease-out forwards;
+    z-index: 11;
+}
+
+.harvest-value-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: gold;
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    animation: value-popup 1.2s ease-out forwards;
+    z-index: 12;
+}
+
+@keyframes coin-fly-up {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-50px) scale(0.5);
+        opacity: 0;
+    }
+}
+
+@keyframes value-popup {
+    0% {
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+    }
+    20% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 1;
+    }
+    80% {
+        transform: translate(-50%, -80%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -100%) scale(0.8);
+        opacity: 0;
+    }
+}
+
+/* Coin particles */
+.coin-particle {
+    width: 8px;
+    height: 8px;
+    background-color: #ffd700;
+    border: 1px solid #b8860b;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 6;
+    animation: coin-spin 0.6s infinite, coin-fly 1s ease-out forwards;
+    transform-origin: center;
+    image-rendering: pixelated;
+    pointer-events: none;
+    border-radius: 50%;
+    box-shadow: 0 0 4px rgba(255, 215, 0, 0.8);
+}
+
+@keyframes coin-spin {
+    0% {
+        transform: translate(-50%, -50%) scaleX(1);
+    }
+    25% {
+        transform: translate(-50%, -50%) scaleX(0.6);
+    }
+    50% {
+        transform: translate(-50%, -50%) scaleX(0.2);
+    }
+    75% {
+        transform: translate(-50%, -50%) scaleX(0.6);
+    }
+    100% {
+        transform: translate(-50%, -50%) scaleX(1);
+    }
+}
+
+@keyframes coin-fly {
+    0% {
+        top: 50%;
+        left: 50%;
+        opacity: 1;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        top: 10%;
+        left: calc(50% + var(--x-offset));
+        opacity: 0;
+    }
+}
+
+/* Enhanced harvest animations */
+.harvest-particle {
+    border-radius: 50%;
+    pointer-events: none;
+    position: absolute;
+}
+
+@keyframes particle-fly {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 1;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(0.2) translate(50px, -80px);
+        opacity: 0;
+    }
+}
+
+@keyframes sparkle-fade {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}
+
+@keyframes plant-harvest {
+    0% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+    30% {
+        transform: scale(1.2) translateY(-10px);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.2) translateY(-50px);
+        opacity: 0;
+    }
+}
+
+/* Harvest message */
+.harvest-message {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-family: 'Press Start 2P', 'PixelFont', cursive;
+    white-space: nowrap;
+    opacity: 0;
+    animation: message-appear 1.5s steps(5) forwards;
+    z-index: 20;
+    border: 2px solid white;
+    text-align: center;
+}
+
+@keyframes message-appear {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(10px);
+    }
+    20% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+    80% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px);
+    }
+}
+
+/* Pixel art particles */
+.harvest-particle {
+    image-rendering: pixelated;
+    position: absolute;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
+}
+
+/* Pixel art star shape for particles */
+.pixel-star {
+    clip-path: polygon(
+        50% 0%, 61% 35%, 98% 35%, 68% 57%,
+        79% 91%, 50% 70%, 21% 91%, 32% 57%,
+        2% 35%, 39% 35%
+    );
+}
+
+/* Pixel art square shape */
+.pixel-square {
+    clip-path: none;
+}
+
+/* Pixel art circle shape */
+.pixel-circle {
+    clip-path: circle(50% at 50% 50%);
+}
+
+/* Pixel art triangle shape */
+.pixel-triangle {
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+/* Pixel sparkles */
+.pixel-sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: #ffffff;
+    z-index: 6;
+}
+
+@keyframes pixel-particle-fly {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(
+            calc(-50% + var(--x-offset)), 
+            calc(-50% + var(--y-offset))
+        ) scale(0.5);
+        opacity: 0;
+    }
+}
+
+@keyframes sparkle-pixel {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}
+
+@keyframes plant-harvest-pixel {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+        filter: brightness(1);
+    }
+    20% {
+        transform: translateY(-5px) scale(1.1);
+        opacity: 1;
+        filter: brightness(1.5);
+    }
+    100% {
+        transform: translateY(-30px) scale(0.5);
+        opacity: 0;
+        filter: brightness(2);
+    }
+}
+
+/* Honey bee animation */
+.honey-bee-container {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    z-index: 200;
+    pointer-events: all; /* Allow interaction but events pass through */
+    transition: transform 0.2s ease;
+    cursor: pointer;
+}
+
+.honey-bee {
+    width: 100%;
+    height: 100%;
+    background-image: url('../../img/map_decoration/Honey.png');
+    background-size: 300% 100%; /* 3 frames wide, 1 frame high */
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+    transform: scaleX(-1); /* Flip bee horizontally to correct orientation */
+}
+
+.honey-bee.frame-1 {
+    background-position: 0% 0;
+}
+
+.honey-bee.frame-2 {
+    background-position: 50% 0;
+}
+
+.honey-bee.frame-3 {
+    background-position: 100% 0;
+}
+
+/* Animation for flying bee */
+@keyframes flyRight {
+    from {
+        transform: translateX(-10px) translateY(5px);
+    }
+    to {
+        transform: translateX(10px) translateY(-5px);
+    }
+}
+
+@keyframes flyLeft {
+    from {
+        transform: translateX(10px) translateY(5px) scaleX(-1);
+    }
+    to {
+        transform: translateX(-10px) translateY(-5px) scaleX(-1);
+    }
+}
+
+/* Direction classes */
+.honey-bee-flying-right {
+    animation: flyRight 1.5s alternate infinite ease-in-out;
+}
+
+.honey-bee-flying-left {
+    animation: flyLeft 1.5s alternate infinite ease-in-out;
+    transform: scaleX(-1); /* Flip horizontally when flying left */
+}
+
+/* Hovering animation */
+@keyframes hoverEffect {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+    100% { transform: translateY(0); }
+}
+
+.honey-bee-hovering {
+    animation: hoverEffect 2s infinite ease-in-out;
+}
+
+/* Fly away animation when clicked */
+@keyframes flyAwayRight {
+    0% { transform: translateX(0) translateY(0); }
+    100% { transform: translateX(150px) translateY(-100px); }
+}
+
+@keyframes flyAwayLeft {
+    0% { transform: translateX(0) translateY(0) scaleX(-1); }
+    100% { transform: translateX(-150px) translateY(-100px) scaleX(-1); }
+}
+
+.honey-bee-fleeing-right {
+    animation: flyAwayRight 1.5s ease-out forwards;
+    pointer-events: none;
+}
+
+.honey-bee-fleeing-left {
+    animation: flyAwayLeft 1.5s ease-out forwards;
+    pointer-events: none;
+}
