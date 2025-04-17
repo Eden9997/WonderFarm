@@ -27,8 +27,5 @@
 /* Shop system */
 @import url('modules/shop.css');
 
-/* Toolbar system */
-@import url('modules/toolbar.css');
-
 /* Responsive design */
 @import url('modules/responsive.css');
